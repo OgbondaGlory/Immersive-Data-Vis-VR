@@ -1,5 +1,5 @@
 // load the data from the JSON file
-d3.json('https://ebubegloryogbonda.dev/data.json').then(function(data) {
+d3.json('data.json').then(function(data) {
     // select the chart element
     var chart = d3.select('#chart');
     
