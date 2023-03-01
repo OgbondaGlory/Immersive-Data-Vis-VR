@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Immersive Data Visualization</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <template id="bar-template">
+          <a-entity position="0 0 0">
+            <a-box color="blue" width="0.5" depth="0.5" position="0 0.25 0"></a-box>
+            <a-box color="blue" width="0.5" depth="0.5" position="0 -0.25 0"></a-box>
+          </a-entity>
+        </template>
+      </a-assets>
+
+      <a-entity id="chart"></a-entity>
+    </a-scene>
+
+    <script src="app.js"></script>
+  </body>
+</html>
