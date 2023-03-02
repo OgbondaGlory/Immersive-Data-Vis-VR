@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <title>Immersive Data Visualization</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+      var data = [
+        { "name": "Product A", "sales": 1},
+        { "name": "Product B", "sales": 2},
+        { "name": "Product C", "sales": 3},
+        { "name": "Product A", "sales": 4},
+        { "name": "Product B", "sales": 5},
+        { "name": "Product C", "sales": 6},
+        { "name": "Product A", "sales": 7},
+        { "name": "Product B", "sales": 8},
+        { "name": "Product C", "sales": 9},
+        { "name": "Product A", "sales": 10},
+        { "name": "Product B", "sales": 11},
+        { "name": "Product C", "sales": 12}
+      ];
+
+      var chart = null;
+
+      AFRAME.registerComponent('data-visualization', {
+        init: function() {
+          chart = d3.select(this.el)
+            .append('a-entity')
+            .attr('position', '0 0 0')
+            .attr('rotation', '0 0 0');
+
+          chart.selectAll('a-box')
+            .data(data)
+            .enter()
+            .append('a-box')
+            .attr('height', function(d) { return d.sales; })
+            .attr('width', '0.5')
+            .attr('depth', '0.5')
+            .attr('color', '#FFC107')
+            .attr('position', function(d, i) { return (i - 1) + ' ' + (d.sales / 2) + ' 0'; });
+
+          chart.selectAll('a-box')
+            .transition()
+            .duration(1000)
+            .attr('height', function(d) { return d.sales * Math.random(); })
+            .transition()
+            .duration(1000)
+            .attr('height', function(d) { return d.sales; })
+            .on('end', function() { d3.select(this).call(arguments.callee); });
+        },
+      });
+
+      AFRAME.registerComponent('hit-test', {
+        init: function() {
+          var scene = document.querySelector('a-scene');
+          scene.addEventListener('loaded', function() {
+            var session = null;
+            navigator.xr.requestSession('immersive-ar').then(function(_session) {
+              session = _session;
+              session.requestReferenceSpace('viewer').then(function(referenceSpace) {
+                var hitTestSource = session.requestHitTestSource({ space: referenceSpace });
+                hitTestSource.addEventListener('hit', function(e) {
+                  chart.setAttribute('position', e.detail.hitMatrix);
+                  chart.setAttribute('rotation', '0 0 0');
+                });
+              });
+              session.end();
+            });
+          });
+        },
+      });
+
+      AFRAME.registerComponent('hand-input', {
+        init: function() {
+          var hand = null;
+
+          var scene = document.querySelector('a-scene');
+          scene.addEventListener('enter-vr', function() {
+            hand = renderer.xr.getHand(0);
+          });
+
+          scene.addEventListener('frame', function() {
+            if (hand !== null) {
+              var rotation = hand.get('thumb').rotation;
+              chart.setAttribute('rotation', rotation.x + ' ' + rotation.y + ' ' + rotation.z);
+            }
+          });
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity position="0 -2 0">
+        <a-box width="10" height="0.1" depth="10" color="#AAAAAA"></a-box>
+        <a-entity position="0 0 0" data-visualization></a-entity>
+      </a-entity>
+
+      <a-entity position="0 0 12">
+        <a-camera></a-camera>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
