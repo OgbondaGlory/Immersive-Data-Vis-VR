@@ -97,60 +97,52 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("color", "black");
 }
 
- // Add Y-axis tick marks and labels
+// Add Y-axis tick marks and labels
 var yScale = d3.scaleLinear()
-.domain([0, d3.max(dataset)])
-.range([0, 1]);
+  .domain([0, d3.max(dataset)])
+  .range([0, 1]);
 
 var yTicks = yScale.ticks(5);
 
 for (var i = 0; i < yTicks.length; i++) {
-var y = yScale(yTicks[i]);
-var label = yTicks[i];
-axis.append("a-cylinder")
-  .attr("position", "0 " + y + " 0")
-  .attr("height", 0.05)
-  .attr("radius", 0.02)
-  .attr("color", "gray");
-axis.append("a-text")
-  .attr("value", label)
-  .attr("position", "-0.1 " + y + " 0")
-  .attr("align", "right")
-  .attr("width", "1")
-  .attr("color", "black");
+  var y = yScale(yTicks[i]);
+  var label = yTicks[i];
+  axis.append("a-cylinder")
+    .attr("position", "0 " + (y * chartHeight - chartHeight / 2) + " 0")
+    .attr("height", 0.05)
+    .attr("radius", 0.02)
+    .attr("color", "gray");
+  axis.append("a-text")
+    .attr("value", label)
+    .attr("position", "-0.1 " + (y * chartHeight - chartHeight / 2) + " 0")
+    .attr("align", "right")
+    .attr("width", "1")
+    .attr("color", "black");
 }
 
-// Add Y-axis label
+// Add X-axis label
+axis.append("a-text")
+  .attr("value", "X Axis")
+  .attr("position", "0 " + (-chartHeight / 2 - 0.1) + " " + (chartDepth / 2 + 0.2))
+  .attr("rotation", "0 0 0")
+  .attr("align", "center")
+  .attr("width", "2")
+  .attr("color", "black");
+
+  // Add Y-axis label
 axis.append("a-text")
 .attr("value", "Y Axis")
-.attr("position", "-0.2 " + yScale(d3.max(dataset) / 2) + " 0")
+.attr("position", "-0.2 " + ((d3.max(yTicks) / 2) * chartHeight - chartHeight / 2) + " 0")
 .attr("rotation", "0 0 -90")
 .attr("align", "center")
 .attr("width", "2")
 .attr("color", "black");
 
-
-  // Add axis labels
-  axis.append("a-text")
-  .attr("value", "X Axis")
-  .attr("position", chartWidth / 2 + " -0.1 " + chartDepth / 2)
-  .attr("rotation", "0 0 -90")
-  .attr("align", "center")
-  .attr("width", "2")
-  .attr("color", "black");
-  
-  // axis.append("a-text")
-  // .attr("value", "Y Axis")
-  // .attr("position", "0 " + (chartDepth / 2 + 0.2) + " 0")
-  // .attr("rotation", "-90 0 0")
-  // .attr("align", "center")
-  // .attr("width", "2")
-  // .attr("color", "black");
-  
-  axis.append("a-text")
-  .attr("value", "Z Axis")
-  .attr("position", "0 -0.1 " + chartDepth / 2)
-  .attr("rotation", "0 0 0")
-  .attr("align", "center")
-  .attr("width", "2")
-  .attr("color", "black");
+// Add Z-axis label
+axis.append("a-text")
+.attr("value", "Z Axis")
+.attr("position", (chartWidth / 2 + 0.2) + " -0.1 0")
+.attr("rotation", "0 90 0")
+.attr("align", "center")
+.attr("width", "2")
+.attr("color", "black");
