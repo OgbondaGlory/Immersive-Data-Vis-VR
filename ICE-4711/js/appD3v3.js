@@ -64,36 +64,39 @@ axis.append("a-cylinder")
 // Add X-axis tick marks and labels
 for (var i = 0; i < gridMax; i++) {
   var x = i * 1.1 - chartWidth / 2;
+  var label = i + 1;
   axis.append("a-cylinder")
-  .attr("position", x + " 0 " + chartDepth / 2)
-  .attr("height", 0.05)
-  .attr("radius", 0.02)
-  .attr("rotation", "90 0 0")
-  .attr("color", "gray");
+    .attr("position", x + " 0 " + chartDepth / 2)
+    .attr("height", 0.05)
+    .attr("radius", 0.02)
+    .attr("rotation", "90 0 0")
+    .attr("color", "gray");
   axis.append("a-text")
-  .attr("value", i + 1)
-  .attr("position", x + " -0.1 " + chartDepth / 2)
-  .attr("rotation", "0 0 90")
-  .attr("align", "center")
-  .attr("width", "1")
-  .attr("color", "black");
-  }
-  
-  // Add Z-axis tick marks and labels
-  for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
+    .attr("value", label)
+    .attr("position", x + " -0.1 " + chartDepth / 2)
+    .attr("rotation", "0 0 90")
+    .attr("align", "center")
+    .attr("width", "1")
+    .attr("color", "black");
+}
+
+// Add Z-axis tick marks and labels
+for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
   var z = i * 1.1 - chartDepth / 2;
+  var label = i + 1;
   axis.append("a-cylinder")
-  .attr("position", "0 0 " + z)
-  .attr("height", 0.05)
-  .attr("radius", 0.02)
-  .attr("color", "gray");
+    .attr("position", "0 0 " + z)
+    .attr("height", 0.05)
+    .attr("radius", 0.02)
+    .attr("color", "gray");
   axis.append("a-text")
-  .attr("value", i + 1)
-  .attr("position", "0 -0.1 " + z)
-  .attr("align", "center")
-  .attr("width", "1")
-  .attr("color", "black");
-  }
+    .attr("value", label)
+    .attr("position", "0 -0.1 " + z)
+    .attr("align", "center")
+    .attr("width", "1")
+    .attr("color", "black");
+}
+
   
   // Add Y-axis tick marks and labels
   for (var i = 0; i < 6; i++) {
