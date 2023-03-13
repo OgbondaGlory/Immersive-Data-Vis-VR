@@ -26,19 +26,3 @@ myBars.append("a-box")
           alert("You clicked on bar " + i + " with value " + d + "!");
         }
       });
-
-// myBars.append("a-text")
-//       .attr({
-//         value: function(d) { return d; },
-//         color: "#000000",
-//         width: 4,
-//         align: "center",
-//         anchor: "center",
-//         position: function(d, i) {
-//           var x = i % gridMax;
-//           var z = Math.floor(i / gridMax);
-//           var y = d / 4 + 0.2;
-//           return x + " " + y + " " + z;
-//         },
-//         rotation: "-90 0 0"
-//       });
