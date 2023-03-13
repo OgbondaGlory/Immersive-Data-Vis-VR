@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>AR Demo</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!--<script src="https://d3js.org/d3.v3.min.js"></script>-->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/splash.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body style='margin: 0px; overflow: hidden;'>
+    <a-scene embedded arjs>
+        <a-marker preset="hiro">
+         <!--<a-box position="0.0 0.5 0.0" material='color: yellow;'></a-box>-->
+          <a-entity id="helloworld" rotation="0 0 0" position="-0.01 -0.0 -0.0" scale="0.1 0.1 0.1"></a-entity>
+        </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+    <script src="js/appD3v6.js"></script>
+  </body>
+</html>
