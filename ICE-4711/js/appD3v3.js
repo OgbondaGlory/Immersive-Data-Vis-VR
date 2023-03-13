@@ -7,7 +7,10 @@ var myBars = content.selectAll("a-entity.bar")
                    .data(dataset)
                    .enter()
                    .append("a-entity")
-                   .classed("bar", true);
+                   .classed("bar", true)
+                   .on("click", function(d, i) {
+                     alert("You clicked on bar " + i + " with value " + d + "!");
+                   });
 
 myBars.append("a-box")
       .attr({
@@ -21,8 +24,5 @@ myBars.append("a-box")
             color += letters[Math.floor(Math.random() * 16)];
           }
           return color;
-        },
-        onclick: function(d, i) {
-          alert("You clicked on bar " + i + " with value " + d + "!");
         }
       });
