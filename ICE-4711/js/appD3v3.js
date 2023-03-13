@@ -7,10 +7,7 @@ var myBars = content.selectAll("a-entity.bar")
                    .data(dataset)
                    .enter()
                    .append("a-entity")
-                   .classed("bar", true)
-                   .on("click", function(d, i) {
-                     alert("You clicked on bar " + i + " with value " + d + "!");
-                   });
+                   .classed("bar", true);
 
 myBars.append("a-box")
       .attr({
@@ -26,3 +23,9 @@ myBars.append("a-box")
           return color;
         }
       });
+
+myBars.each(function(d, i) {
+  this.addEventListener("click", function() {
+    alert("You clicked on bar " + i + " with value " + d + "!");
+  });
+});
