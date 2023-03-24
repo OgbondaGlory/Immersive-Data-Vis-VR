@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     height: 100vh;
     background-color: #1A1919; /* 90% opacity */
 }
@@ -22,7 +22,7 @@ body {
     height: 100%;
     margin-bottom: 20px;
     position: relative; /* Added for the pseudo-element */
-    top: -40px; /* Change this value to move the divs up */
+    top: -20px; /* Change this value to move the divs up */
 
 }
 
@@ -62,17 +62,17 @@ body {
 }
 
 .upload-btn {
-    background-color: grey;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  
+  background-color: grey;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
   
 
 
