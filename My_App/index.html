@@ -9,6 +9,9 @@
     <title>Immersive Data Visualisation</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-mouse-drag-rotate-component/master/dist/aframe-mouse-drag-rotate-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-orbit-controls@0.1.9/dist/aframe-orbit-controls.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -18,9 +21,13 @@
         </div>
         <div class="middle">
             <div class="box vr" id="box3">
-                <a-scene embedded>
-                    <a-entity id="helloworld" rotation="0 0 0" position="-0.01 -0.0 -0.0" scale="0.1 0.1 0.1"></a-entity>
-                </a-scene>
+                <a-scene embedded cursor="rayOrigin: mouse">
+                    <a-entity id="helloworld" rotation="0 0 0" position="-0.01 -0.0 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
+                    <a-camera position="0 0.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14">
+                    </a-camera>
+                  </a-scene>
+                  
+                
             </div>
             <div class="box small" id="box4"></div>
         </div>
