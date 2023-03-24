@@ -165,30 +165,36 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
 
 // Upload Section Scripting 
 function handleUploadClick() {
-  const fileInput = document.getElementById('fileInput');
-  
-  // Trigger the hidden file input click event
-  fileInput.click();
-
-  // Handle file input change event
-  fileInput.onchange = function (event) {
-    const file = event.target.files[0];
-
-    // Check if the file is a JSON file
-    if (file.type === 'application/json') {
-      // Process the JSON file
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const data = JSON.parse(e.target.result);
-        console.log(data);
-        // Handle the JSON data as needed
-      };
-      reader.readAsText(file);
-    } else {
-      alert('Please upload a JSON file.');
-    }
-  };
+  document.getElementById("fileInput").click();
 }
+
+document.getElementById("fileInput").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+
+  if (file) {
+    // Create FormData to send the file to the server
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Send the file to the server using an XMLHttpRequest or Fetch
+    fetch("upload.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert(data.message);
+        } else {
+          alert("An error occurred.");
+        }
+      })
+      .catch((error) => {
+        alert("An error occurred: " + error.message);
+      });
+  }
+});
+
 
 
 

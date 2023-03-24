@@ -64,12 +64,12 @@
                   </a-scene>  
             </div>
 
-            <input type="file" id="fileInput" accept=".json" style="display: none;">
-
-
-            <div class="upload-btn-container" style="display: flex; flex-direction: column; align-items: center;">
+            <form id="uploadForm" enctype="multipart/form-data" method="post">
+                <input type="file" id="fileInput" name="file" accept=".json" style="display: none;">
+              <div class="upload-btn-container" style="display: flex; flex-direction: column; align-items: center;">
                 <button class="upload-btn" onclick="handleUploadClick()">Upload Files</button>
               </div>
+            </form>
 
 
             <div class="box small" id="box4">
