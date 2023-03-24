@@ -3,10 +3,12 @@ console.log(dataset.length);
 
 var gridMax = Math.sqrt(dataset.length);
 var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
-var chartHeight = 1;
+var chartHeight = d3.max(dataset) / 2 ;
 var chartDepth = Math.ceil(dataset.length / gridMax) * 0.9 + (Math.ceil(dataset.length / gridMax) - 1) * 0.1;
 
 var content = d3.select("#helloworld");
+
+console.log(d3.scale)
 
 var myBars = content
   .selectAll("a-box.bar")
@@ -15,11 +17,16 @@ var myBars = content
   .append("a-box")
   .classed("bar", true);
 
+// Add Y-axis tick marks and labels
+var yScale = d3.scale.linear()
+.domain([0, d3.max(dataset)])
+.range([0, 1]);
+
 myBars.attr({
   position: function(d, i) {
     var x = i % gridMax;
     var z = Math.floor(i / gridMax);
-    var y = d / 4;
+    var y = d / 4 - chartHeight/2;
     var posX = x * 1.1 - chartWidth / 2;
     var posZ = z * 1.1 - chartDepth / 2;
     return posX + " " + y + " " + posZ;
@@ -49,7 +56,7 @@ var xAxis = content.append("a-box")
   .attr("height", 0.05)
   .attr("depth", 0.05)
   .attr("position", "0 " + (-chartHeight / 2 - 0.025) + " " + (chartDepth / 2 + 0.025))
-  .attr("color", "black");
+  .attr("color", "white");
 
 // Add Y-axis
 var yAxis = content.append("a-box")
@@ -57,7 +64,7 @@ var yAxis = content.append("a-box")
   .attr("height", chartHeight)
   .attr("depth", 0.05)
   .attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
-  .attr("color", "black");
+  .attr("color", "white");
 
 // Add Z-axis
 var zAxis = content.append("a-box")
@@ -65,7 +72,7 @@ var zAxis = content.append("a-box")
   .attr("height", 0.05)
   .attr("depth", chartDepth)
   .attr("position", (chartWidth / 2 + 0.025) + " -" + (chartHeight / 2 + 0.025) + " 0")
-  .attr("color", "black");
+  .attr("color", "white");
 
 // Add X-axis tick marks and labels
 for (var i = 0; i < gridMax; i++) {
@@ -106,13 +113,11 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("width", "1")
     .attr("color", "black");
     }
-    
-    // Add Y-axis tick marks and labels
-    var yScale = d3.scaleLinear()
-    .domain([0, d3.max(dataset)])
-    .range([0, 1]);
+  
     
     var yTicks = yScale.ticks(5);
+
+    console.log('ticks', yTicks)
     
     for (var i = 0; i < yTicks.length; i++) {
     var y = yScale(yTicks[i]);
@@ -121,14 +126,14 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("width", 0.05)
     .attr("height", 0.05)
     .attr("depth", 0.05)
-    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " 0")
+    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
     .attr("color", "gray");
     content.append("a-text")
     .attr("value", label)
-    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " 0")
+    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
     .attr("align", "right")
     .attr("width", "1")
-    .attr("color", "black");
+    .attr("color", "white");
     }
     
     // Add X-axis label
@@ -138,7 +143,7 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("rotation", "0 0 0")
     .attr("align", "center")
     .attr("width", "2")
-    .attr("color", "black");
+    .attr("color", "white");
     
     // Add Y-axis label
     content.append("a-text")
@@ -147,7 +152,7 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("rotation", "0 0 -90")
     .attr("align", "center")
     .attr("width", "2")
-    .attr("color", "black");
+    .attr("color", "white");
     
     // Add Z-axis label
     content.append("a-text")
