@@ -14,28 +14,82 @@
 
 </head>
 <body>
+
     <div class="container">
+
         <div class="left">
             <div class="box" id="box1"></div>
             <div class="box" id="box2"></div>
         </div>
+
         <div class="middle">
+
+            <div class="dropdown-container">
+                <select id="dropdown-2d-bar-charts" class="dropdown-menu" id="dropdown-2DBar">
+                    <option>2D Bar Charts</option>
+                    <option>Basic Vertical</option>
+                    <option>Basic Horizontal</option>
+                    <option>With tooltips</option>
+                    <option>With filters and tooltips</option>
+                </select>
+                <select id="dropdown-2d-scatter-plots" class="dropdown-menu" id="dropdown-2DScatter">
+                    <option>2D Scatter Plots</option>
+                    <option>Basic</option>
+                    <option>With tooltips</option>
+                    <option>With filters and tooltips</option>
+                    <option>With shapes</option>
+                </select>
+                <select id="dropdown-3d-bar-charts" class="dropdown-menu" id="dropdown-3DBar">
+                    <option>3D Bar Charts</option>
+                    <option>Basic Vertical</option>
+                    <option>Basic Horizontal</option>
+                    <option>With tooltips</option>
+                    <option>With filters and tooltips</option>
+                    <option>With cylinder mark</option>
+                </select>
+                <select id="dropdown-3d-scatter-plots" class="dropdown-menu" id="dropdown-3DScatter">
+                    <option>3D Scatter Plots</option>
+                    <option>Basic</option>
+                    <option>Advanced</option>
+                </select>
+                <select id="dropdown-others" class="dropdown-menu" id="dropdown-others">
+                    <option>OTHERS</option>
+                </select>                
+            </div>
             <div class="box vr" id="box3">
                 <a-scene embedded cursor="rayOrigin: mouse">
                     <a-entity id="helloworld" rotation="0 0 0" position="-0.01 -0.0 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
                     <a-camera position="0 0.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14">
                     </a-camera>
-                  </a-scene>
-                  
-                
+                  </a-scene>  
             </div>
+
+    
+
             <div class="box small" id="box4"></div>
         </div>
+
         <div class="right">
             <div class="box" id="box5"></div>
             <div class="box" id="box6"></div>
         </div>
+
     </div>
     <script src="js/appD3v3.js"></script>
+
+    <script>
+        const dropdowns = document.querySelectorAll('.dropdown');
+    
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('focus', () => {
+                dropdown.style.backgroundColor = 'lightgrey';
+            });
+    
+            dropdown.addEventListener('blur', () => {
+                dropdown.style.backgroundColor = '';
+            });
+        });
+    </script>
+    
 </body>
 </html>
