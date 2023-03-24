@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(14, 8, 8, 0.9); /* 90% opacity */
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    height: 75%; /* 75% of the body height */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.box {
+    width: 100%;
+    height: 50%;
+    margin-bottom: 20px;
+}
+
+.left, .middle, .right {
+    width: calc(30% * 0.65); /* 35% reduction in width */
+}
+
+.middle {
+    width: 55%;
+}
+.middle .vr {
+    height: 85%;
+}
+.middle .small {
+    height: 160px;
+}
+
+.right .box {
+    height: 50%;
+}
+
+/* Unique colors for each box */
+#box1 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+}
+
+#box2 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+}
+
+#box3 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+    
+}
+
+#box4 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+}
+
+#box5 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+}
+
+#box6 {
+    background-color: rgba(14, 8, 8, 0.6); /* 90% opacity */
+}
