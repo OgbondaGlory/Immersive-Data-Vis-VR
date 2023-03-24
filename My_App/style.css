@@ -5,7 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: rgba(14, 8, 8, 0.9); /* 90% opacity */
+    background-color: #1A1919; /* 90% opacity */
 }
 
 .container {
