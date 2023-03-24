@@ -3,6 +3,7 @@ console.log(dataset.length);
 
 var gridMax = Math.sqrt(dataset.length);
 var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+var chartHeight = 1;
 var chartDepth = Math.ceil(dataset.length / gridMax) * 0.9 + (Math.ceil(dataset.length / gridMax) - 1) * 0.1;
 
 var content = d3.select("#helloworld");
@@ -85,6 +86,7 @@ for (var i = 0; i < gridMax; i++) {
     .attr("color", "black");
 }
 
+console.log("test")
 console.log(content)
 
 // Add Z-axis tick marks and labels
