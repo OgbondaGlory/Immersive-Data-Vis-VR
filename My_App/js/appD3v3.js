@@ -85,6 +85,8 @@ for (var i = 0; i < gridMax; i++) {
     .attr("color", "black");
 }
 
+console.log(content)
+
 // Add Z-axis tick marks and labels
 for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
   var z = i * 1.1 - chartDepth / 2;
