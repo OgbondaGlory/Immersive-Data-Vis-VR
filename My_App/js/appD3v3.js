@@ -162,3 +162,34 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("align", "center")
     .attr("width", "2")
     .attr("color", "black");
+
+// Upload Section Scripting 
+function handleUploadClick() {
+  const fileInput = document.getElementById('fileInput');
+  
+  // Trigger the hidden file input click event
+  fileInput.click();
+
+  // Handle file input change event
+  fileInput.onchange = function (event) {
+    const file = event.target.files[0];
+
+    // Check if the file is a JSON file
+    if (file.type === 'application/json') {
+      // Process the JSON file
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const data = JSON.parse(e.target.result);
+        console.log(data);
+        // Handle the JSON data as needed
+      };
+      reader.readAsText(file);
+    } else {
+      alert('Please upload a JSON file.');
+    }
+  };
+}
+
+
+
+
