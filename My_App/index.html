@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="css/app.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Immersive Data Visualisation</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -15,7 +17,11 @@
             <div class="box" id="box2"></div>
         </div>
         <div class="middle">
-            <div class="box vr" id="box3"></div>
+            <div class="box vr" id="box3">
+                <a-scene embedded>
+                    <a-entity id="helloworld" rotation="0 0 0" position="-0.01 -0.0 -0.0" scale="0.1 0.1 0.1"></a-entity>
+                </a-scene>
+            </div>
             <div class="box small" id="box4"></div>
         </div>
         <div class="right">
@@ -23,5 +29,6 @@
             <div class="box" id="box6"></div>
         </div>
     </div>
+    <script src="js/appD3v3.js"></script>
 </body>
 </html>
