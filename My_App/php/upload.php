@@ -1,11 +1,31 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 // Helper function to sanitize table names
 function sanitizeTableName($name) {
     return preg_replace('/[^A-Za-z0-9_]+/', '_', $name);
 }
 
-// ... (database connection code)
 
+// Replace these values with your database credentials
+$servername = "localhost";
+$username = "qrapacsf_XR_ogbonda_glory";
+$password = "ivLmSSgaN5QVZ9A";
+$dbname = "qrapacsf_immersive_data_vis";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 // Get the uploaded file
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
     $file = $_FILES['file'];

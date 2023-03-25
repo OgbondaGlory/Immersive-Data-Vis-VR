@@ -14,7 +14,7 @@
 
 </head>
 <body>
-
+    
     <div class="container" style="padding-top: 1px;">
 
         <div class="left">
@@ -64,12 +64,26 @@
                   </a-scene>  
             </div>
 
-            <form id="uploadForm" enctype="multipart/form-data" method="post">
-                <input type="file" id="fileInput" name="file" accept=".json" style="display: none;">
-              <div class="upload-btn-container" style="display: flex; flex-direction: column; align-items: center;">
-                <button class="upload-btn" onclick="handleUploadClick()">Upload Files</button>
-              </div>
+            <form id="uploadForm" enctype="multipart/form-data" method="post" action="php/upload.php">
+                <input type="file" id="fileInput" name="file" accept=".json" >
+                <input type="submit">
             </form>
+
+
+  <!-- <div class="upload-btn-container" style="display: flex; flex-direction: column; align-items: center;">
+                <button class="upload-btn" onclick="handleUploadClick()">Upload Files</button>
+              </div> -->
+            <!-- <div class="modal hidden" id="confirmModal">
+                    <div id="confirmationModal" class="modal">
+                        <div class="modal-content">
+                        <p>Are you sure you want to upload the selected file?</p>
+                        <div class="modal-buttons">
+                            <button id="confirmUploadBtn">Confirm</button>
+                            <button id="cancelUploadBtn">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+            </div>   -->
 
 
             <div class="box small" id="box4">

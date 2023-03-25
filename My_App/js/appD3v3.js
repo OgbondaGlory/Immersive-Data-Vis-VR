@@ -163,37 +163,13 @@ for (var i = 0; i < Math.ceil(dataset.length / gridMax); i++) {
     .attr("width", "2")
     .attr("color", "black");
 
-// Upload Section Scripting 
-function handleUploadClick() {
-  document.getElementById("fileInput").click();
-}
 
-document.getElementById("fileInput").addEventListener("change", function (e) {
-  const file = e.target.files[0];
 
-  if (file) {
-    // Create FormData to send the file to the server
-    const formData = new FormData();
-    formData.append("file", file);
+    
 
-    // Send the file to the server using an XMLHttpRequest or Fetch
-    fetch("php/upload.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          alert(data.message);
-        } else {
-          alert("An error occurred.");
-        }
-      })
-      .catch((error) => {
-        alert("An error occurred: " + error.message);
-      });
-  }
-});
+    
+    
+
 
 
 
