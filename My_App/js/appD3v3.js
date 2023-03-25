@@ -177,7 +177,7 @@ document.getElementById("fileInput").addEventListener("change", function (e) {
     formData.append("file", file);
 
     // Send the file to the server using an XMLHttpRequest or Fetch
-    fetch("upload.php", {
+    fetch("php/upload.php", {
       method: "POST",
       body: formData,
     })
