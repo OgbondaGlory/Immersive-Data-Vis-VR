@@ -3,25 +3,28 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #1A1919; /* 90% opacity */
-}
-
-.container {
+    /* Remove align-items: center; to make the content start closer to the top */
+    height: 75vh; /* Change height to min-height to allow the content to expand */
+    background-color: #1A1919;
+    padding-top: 40px; /* Add padding to the top of the body */
+  }
+  
+  .container {
     display: flex;
     justify-content: space-around;
     padding: 10px;
-    height: 75%; /* 75% of the body height */
+    height: 100%; /* Adjust this value if needed */
     width: 100%;
     box-sizing: border-box;
-}
+  }
+  
 
 .box {
     width: 100%;
     height: 50%;
     margin-bottom: 20px;
     position: relative; /* Added for the pseudo-element */
+    border-radius: 15px; /* Add border-radius to all boxes */
 }
 
 .box::before {
@@ -33,7 +36,15 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6); /* Control opacity with the alpha value */
     z-index: 1;
+    border-radius: 15px; /* Add border-radius to the overlay */
+
 }
+
+.box-content {
+    position: relative;
+    z-index: 2;
+  }
+  
 
 .left, .middle, .right {
     width: calc(30% * 0.65); /* 35% reduction in width */
@@ -68,7 +79,13 @@ body {
 
 #box4 {
     background-color: #0E0808;
+    border-radius: 0; /* Remove border-radius for box4 */
+
 }
+
+#box4::before {
+    border-radius: 0; /* Remove border-radius for box4 overlay */
+  }
 
 #box5 {
     background-color: #0E0808;
@@ -145,3 +162,148 @@ button:hover {
     color: rgba(127,255,255,0.85);
     background: black;
 }
+
+
+  
+
+/* BOX 1 Table List */
+
+.table-list {
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
+    padding-top: 20px;
+  }
+  
+  .table-list th,
+  .table-list td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .table-list tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .table-list tbody td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .table-list {
+    width: 100%;
+    font-size: 12px;
+    color: white;
+  }
+  #tableList {
+    margin-top: 0px;
+    max-height: 100%; /* Adjust this value based on the desired height */
+    overflow-y: auto;
+  }
+
+  #table-list {
+    padding-top: 12px;
+  }
+  
+
+  /* Buttons */
+  #refresh-button {
+    background-color: white;
+    color: black;
+    font-size: 12px; /* Adjust the font size to make the button smaller */
+    padding: 4px 8px; /* Adjust the padding to make the button smaller */
+    border: none;
+    cursor: pointer;
+    position: absolute; /* Add this to position the button to the right end of the div */
+    top: 0; /* Add this to position the button at the top of the div */
+    right: 0; /* Add this to position the button at the right end of the div */
+    border-radius: 7px; /* Add border-radius to the refresh button */
+  }
+  
+  #refresh-button:hover {
+    background-color: blue;
+    color: white;
+  }
+  .run-button {
+    background-color: white;
+    color: black;
+    font-size: 12px; /* Adjust the font size to make the button smaller */
+    padding: 4px 8px; /* Adjust the padding to make the button smaller */
+    border: none;
+    cursor: pointer;
+    text-align: right; /* Align the button to the right end of the table cell */
+    border-radius: 7px; /* Add border-radius to the run button */
+  }
+  
+  
+  .run-button:hover {
+    background-color: blue;
+    color: white;
+  }
+
+  /* dISPALY 5 ROWS BOX4 */
+  
+  .box-content {
+    position: relative;
+    overflow-y: auto;
+    max-height: 100%; /* Adjust this value according to your desired max height */
+  }
+  
+  .table-data {
+    color: white;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    border-collapse: collapse; /* Add this for proper table borders */
+  }
+  
+  .table-data th,
+  .table-data td {
+    padding: 4px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Change the border color and transparency as desired */
+  }
+  
+  .table-data th {
+    background-color: rgba(0, 0, 0, 0.3); /* Add this for a background color on the column headers */
+  }
+  .table-data tbody tr:hover {
+    background-color: rgba(26, 25, 25, 0.5); /* Similar to the body background color, but with some transparency */
+  }
+  
+  .table-data tbody tr:hover td {
+    background-color: rgba(26, 25, 25, 0.5); /* Similar to the body background color, but with some transparency */
+  }
+  
+  .table-data tbody td:hover {
+    background-color: rgba(26, 25, 25, 0.7); /* Slightly darker than the row hover color */
+  }
+
+  .table-list tbody tr.selected 
+  {
+    background-color: rgba(255, 255, 255, 0.2); /* Change the color and opacity as desired */
+  }
+  
+  
+  /* Data Name Div */
+  .selected-table {
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    width: auto;
+    text-align: center;
+    margin-bottom: 1rem; /* Adjust this value for the space between the new div and box4 */
+  }
+  
+  

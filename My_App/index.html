@@ -18,22 +18,39 @@
     <div class="container" style="padding-top: 1px;">
 
         <div class="left">
-            <div class="custom-select">
+            <!-- <div class="custom-select">
                 <select id="datasetSelect">
                     <option value="">Dataset</option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
+                    <option value="option1">Today</option>
+                    <option value="option2">This Week</option>
+                    <option value="option3">This Month</option>
                 </select>
-            </div>
+                
+            </div> -->
+            <form id="uploadForm" enctype="multipart/form-data" method="post" action="php/upload.php">
+                <input type="file" id="fileInput" name="file" accept=".json,.csv,.xls,.xlsx" >
+                <input type="submit">
+            </form>
             <div class="box" id="box1">
+                <div class="box-content">
+                    <button id="refresh-button">Reload</button>
+                    <div id="table-list">
+                        <div id="tableList">
+                            <!-- The table list will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>            
 
-            </div>
+
+
             <div class="box" id="box2"></div>
+            <div class="box-content">
+                <!-- Add the content for box2 here -->
+              </div>
         </div>
 
         <div class="middle">
-
             <div class="dropdown-container">
                 <select id="dropdown-2d-bar-charts" class="dropdown-menu" id="dropdown-2DBar">
                     <option>2D Bar Charts</option>
@@ -66,6 +83,8 @@
                     <option>Others</option>
                 </select>                
             </div>
+
+
             <div class="box vr" id="box3">
                 <a-scene embedded cursor="rayOrigin: mouse">
                     <a-entity id="helloworld" rotation="0 0 0" position="-0.01 1.6 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
@@ -74,10 +93,9 @@
                   </a-scene>  
             </div>
 
-            <form id="uploadForm" enctype="multipart/form-data" method="post" action="php/upload.php">
-                <input type="file" id="fileInput" name="file" accept=".json,.csv,.xls,.xlsx" >
-                <input type="submit">
-            </form>
+            <div id="selected-table" class="selected-table">
+                <!-- The table name will be displayed here -->
+              </div>
 
 
   <!-- <div class="upload-btn-container" style="display: flex; flex-direction: column; align-items: center;">
@@ -97,18 +115,44 @@
 
 
             <div class="box small" id="box4">
-              
+                <div class="box-content">
+                    <!-- Add the content for box4 here -->
+                  </div>
                   
             </div>
         </div>
 
+
+
         <div class="right">
-            <div class="box" id="box5"></div>
-            <div class="box" id="box6"></div>
+            <div class="custom-select">
+                <select id="statisticsSelect">
+                    <option value="">Statistics</option>
+                    <option value="distribution">Distribution</option>
+                </select>
+            </div>
+
+            
+
+            <div class="box" id="box5">
+                <div class="box-content">
+                    <!-- Add the content for box5 here -->
+                  </div>
+            </div>
+
+
+
+            <div class="box" id="box6">
+                <div class="box-content">
+                    <!-- Add the content for box6 here -->
+                  </div>
+            </div>
         </div>
 
     </div>
     <script src="js/appD3v3.js"></script>
+    <script src="js/fetch_tables.js"></script>
+
 
     <script>
         const dropdowns = document.querySelectorAll('.dropdown');
