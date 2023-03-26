@@ -18,7 +18,17 @@
     <div class="container" style="padding-top: 1px;">
 
         <div class="left">
-            <div class="box" id="box1"></div>
+            <div class="custom-select">
+                <select id="datasetSelect">
+                    <option value="">Dataset</option>
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                </select>
+            </div>
+            <div class="box" id="box1">
+
+            </div>
             <div class="box" id="box2"></div>
         </div>
 
@@ -65,7 +75,7 @@
             </div>
 
             <form id="uploadForm" enctype="multipart/form-data" method="post" action="php/upload.php">
-                <input type="file" id="fileInput" name="file" accept=".json" >
+                <input type="file" id="fileInput" name="file" accept=".json,.csv,.xls,.xlsx" >
                 <input type="submit">
             </form>
 

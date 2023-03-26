@@ -156,7 +156,7 @@ a {
     padding: 0px 0px;
 }
 
-button {
+/* button {
     opacity: 0.5;
     text-align: center;
     color: black;
@@ -169,11 +169,11 @@ button {
 	padding: 5px 10px;
 	cursor: pointer;
     margin: 10px;
-}
-button:hover {
+} */
+/* button:hover {
     color: rgba(127,255,255,0.85);
     background: black;
-}
+} */
 
 .dropdown-container {
     display: flex;
