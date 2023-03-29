@@ -276,16 +276,11 @@ var zAxis = content.append("a-box")
               // Clear existing content
               var content = d3.select("#helloworld").html("");
 
-              // Map the category names from the dataset
-              var categoryNames = tableData.map((row) => row[axes.x]);
-
               // Map the dataset from tableData using only axes.y and sort it
               var dataset = tableData
                   .sort((a, b) => a[axes.y] - b[axes.y])
                   .map((row) => row[axes.y]);
 
-
-                  
               const maxHeight = Math.max(...dataset);
               const scalingFactor = maxHeight > 50 ? 50 / maxHeight : 1;
               var gridMax = Math.ceil(Math.sqrt(dataset.length));
@@ -367,8 +362,8 @@ var zAxis = content.append("a-box")
             //     .nice();
             // Create an ordinal scale for the X-axis using the categorical data
             var xScale = d3.scale.ordinal()
-                .domain(categoryNames)
-                .rangePoints([0, chartWidth]);
+            .domain(tableData.map((row) => row[axes.x]))
+            .rangeRoundBands([0, chartWidth], 0.1);
             
             var zScale = d3.scale.linear()
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
@@ -376,7 +371,7 @@ var zAxis = content.append("a-box")
                 .nice();
 
 
-           // Add X-axis tick marks and labels
+            // Add X-axis tick marks and labels
             var xTicks = xScale.domain();
             for (var i = 0; i < xTicks.length; i++) {
               var x = xScale(xTicks[i]);
