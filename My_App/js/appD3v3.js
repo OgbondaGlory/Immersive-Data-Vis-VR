@@ -282,7 +282,16 @@ var zAxis = content.append("a-box")
                   .map((row) => row[axes.y]);
 
               const maxHeight = Math.max(...dataset);
-              const scalingFactor = maxHeight > 50 ? 50 / maxHeight : 1;
+              const logMaxHeight = Math.log10(maxHeight);
+              const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
+              const rescaledMaxHeight = maxHeight * scalingFactor;
+              // Calculate the number of Y-axis ticks based on the custom function
+              var minValue = 0;
+              var maxValue = d3.max(dataset);
+              var scaleFactor = 1.2; // Adjust this value to change the number of ticks
+
+
+
               var gridMax = Math.ceil(Math.sqrt(dataset.length));
               var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
               var chartHeight = d3.max(dataset) / 2;
@@ -335,12 +344,14 @@ var zAxis = content.append("a-box")
               .attr("color", "white");
 
             // Add Y-axis
-            var yAxis = content.append("a-box")
-              .attr("width", 0.05)
-              .attr("height", chartHeight)
-              .attr("depth", 0.05)
-              .attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
-              .attr("color", "white");
+            // Add Y-axis
+var yAxis = content.append("a-box")
+.attr("width", 0.05)
+.attr("height", chartHeight)
+.attr("depth", 0.05)
+.attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
+.attr("color", "white");
+
 
             // Add Z-axis
             var zAxis = content.append("a-box")
@@ -351,16 +362,23 @@ var zAxis = content.append("a-box")
               .attr("color", "white");
 
             // Modify the Y-scale to use d3.nice()
-            var yScale = d3.scale.linear()
-                .domain([0, maxHeight * scalingFactor])
-                .range([0, 1])
-                .nice();
+           // Modify the Y-scale to use d3.nice()
+// Modify the Y-scale to use d3.nice()
+var yScale = d3.scale.linear()
+  .domain([0, d3.max(dataset)])
+  .range([0, 1])
+  .nice();
+
+
+
             // Create X and Z scales with d3.nice()
             // var xScale = d3.scale.linear()
             //     .domain([0, gridMax - 1])
             //     .range([0, chartWidth])
             //     .nice();
             // Create an ordinal scale for the X-axis using the categorical data
+            
+            
             var xScale = d3.scale.ordinal()
             .domain(tableData.map((row) => row[axes.x]))
             .rangeRoundBands([0, chartWidth], 0.1);
@@ -369,7 +387,6 @@ var zAxis = content.append("a-box")
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
                 .range([0, chartDepth])
                 .nice();
-
 
             // Add X-axis tick marks and labels
             var xTicks = xScale.domain();
@@ -414,48 +431,50 @@ var zAxis = content.append("a-box")
                 }
 
 
-                function calculateTickCount(minValue, maxValue, scaleFactor, scalingFactor) {
-                  var dataRange = (maxValue - minValue) * scalingFactor;
-                  
+                function calculateTickCount(minValue, maxValue, scaleFactor) {
+                  var dataRange = maxValue - minValue;
+                            
                   // Base calculation using the square root of the data range
                   var baseTickCount = Math.ceil(Math.sqrt(dataRange));
-              
+                            
                   // If the data range is smaller than the maximum value, increase the base tick count
                   if (dataRange < maxValue) {
                       baseTickCount *= 1.5;
                   }
-              
+                            
                   // Adjust the tick count using the scaleFactor
                   return Math.ceil(baseTickCount * scaleFactor);
               }
               
+              
                 
-                // Calculate the number of Y-axis ticks based on the custom function
-                var minValue = 0;
-                var maxValue = d3.max(dataset);
-                var scaleFactor = 1.2; // Adjust this value to change the number of ticks
-
-                var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor, scalingFactor);
+                
+                var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
                 // Add Y-axis tick marks and labels
-                var yTicks = yScale.ticks(yTickCount);
-                
-                for (var i = 0; i < yTicks.length; i++) {
-                var y = yScale(yTicks[i]);
-                var label = yTicks[i] / scalingFactor;
-                content.append("a-box")
-                .attr("width", 0.05)
-                .attr("height", 0.05)
-                .attr("depth", 0.05)
-                .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
-                .attr("color", "gray");
-                content.append("a-text")
-                .attr("value", label)
-                .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
-                .attr("align", "right")
-                .attr("width", "12")
-                .attr("color", "white");
-                }
+                // Add Y-axis tick marks and labels
+// Add Y-axis tick marks and labels
+// Add Y-axis tick marks and labels
+var yTicks = yScale.ticks(yTickCount);
+for (var i = 0; i < yTicks.length; i++) {
+  var y = yScale(yTicks[i]);
+  var label = yTicks[i];
+  content.append("a-box")
+    .attr("width", 0.05)
+    .attr("height", 0.05)
+    .attr("depth", 0.05)
+    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
+    .attr("color", "gray");
+  content.append("a-text")
+    .attr("value", label)
+    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
+    .attr("align", "right")
+    .attr("width", "12")
+    .attr("color", "white");
+}
+
+
+
                 
                 // Add X-axis label
                 content.append("a-text")
