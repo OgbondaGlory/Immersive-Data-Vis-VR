@@ -67,6 +67,7 @@ body {
 /* Unique colors for each box */
 #box1 {
     background-color: #0E0808;
+
 }
 
 #box2 {
@@ -214,6 +215,11 @@ button:hover {
 
   #table-list {
     padding-top: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+
+
   }
   
 

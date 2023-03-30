@@ -54,6 +54,8 @@ var data = {
 
 data.people.sort((a, b) => a.age - b.age);
 
+
+var names = data.people.map(person => person.firstName);
 var dataset = data.people.map(person => person.age);console.log(dataset.length);
 
 var gridMax = Math.sqrt(dataset.length);
@@ -160,6 +162,9 @@ var zAxis = content.append("a-box")
      .attr("color", "white");
  }
 
+
+
+ 
  console.log("test")
  console.log(content)
 
@@ -312,7 +317,7 @@ var zAxis = content.append("a-box")
                 var x = i % gridMax;
                 var z = Math.floor(i / gridMax);
                 var y = (d * scalingFactor) / 4 - chartHeight / 2;
-                var posX = x * 1.1 - chartWidth / 2;
+                var posX = x * 1.1 - chartWidth / 2 + 0.45;
                 var posZ = - z * 1.1 + chartDepth / 2 - 0.5 ;
                 return posX + " " + y + " " + posZ;
               },
@@ -358,7 +363,7 @@ var yAxis = content.append("a-box")
               .attr("width", 0.05)
               .attr("height", 0.05)
               .attr("depth", chartDepth)
-              .attr("position", (chartWidth / 2 + 0.025) + " -" + (chartHeight / 2 + 0.025) + " 0")
+              .attr("position", (chartWidth / 2 + 0.25) + " -" + (chartHeight / 2 + 0.025) + " 0")
               .attr("color", "white");
 
             // Modify the Y-scale to use d3.nice()
@@ -379,9 +384,11 @@ var yScale = d3.scale.linear()
             // Create an ordinal scale for the X-axis using the categorical data
             
             
-            var xScale = d3.scale.ordinal()
-            .domain(tableData.map((row) => row[axes.x]))
-            .rangeRoundBands([0, chartWidth], 0.1);
+            var xScale = d3.scale.linear()
+            .domain([0, gridMax - 1])
+            .range([0, chartWidth + 0.2])
+            .nice();
+          
             
             var zScale = d3.scale.linear()
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
@@ -389,24 +396,28 @@ var yScale = d3.scale.linear()
                 .nice();
 
             // Add X-axis tick marks and labels
-            var xTicks = xScale.domain();
+            var xTicks = Array.from({ length: gridMax }, (_, i) => i);
             for (var i = 0; i < xTicks.length; i++) {
               var x = xScale(xTicks[i]);
               var label = xTicks[i];
               content.append("a-box")
-                .attr("width", 0.05)
-                .attr("height", 0.05)
-                .attr("depth", 0.05)
-                .attr("position", x + " -" + (chartHeight / 2 + 0.075) + " " + (chartDepth / 2 + 0.05))
-                .attr("color", "gray");
-              content.append("a-text")
+              .attr("width", 0.05)
+              .attr("height", 0.05)
+              .attr("depth", 0.05)
+              .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.075) + " " + (chartDepth / 2 + 0.05))
+              .attr("color", "white");
+
+                content.append("a-text")
                 .attr("value", label)
-                .attr("position", x + " -" + (chartHeight / 2 + 0.125) + " " + (chartDepth / 2 + 0.05))
+                .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.125) + " " + (chartDepth / 2 + 0.05))
                 .attr("rotation", "0 0 90")
                 .attr("align", "center")
                 .attr("width", "12")
                 .attr("color", "white");
+              
             }
+            
+            
 
             console.log("test")
             console.log(content)
@@ -421,7 +432,7 @@ var yScale = d3.scale.linear()
                 .attr("height", 0.05)
                 .attr("depth", 0.05)
                 .attr("position", (chartWidth / 2 + 0.05) + " -" + (chartHeight / 2 + 0.075) + " " + z)
-                .attr("color", "gray");
+                .attr("color", "white");
               content.append("a-text")
                 .attr("value", label)
                 .attr("position", (chartWidth /2 + 0.15) + " -" + (chartHeight / 2 + 0.125) + " " + z)
@@ -464,7 +475,7 @@ for (var i = 0; i < yTicks.length; i++) {
     .attr("height", 0.05)
     .attr("depth", 0.05)
     .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
-    .attr("color", "gray");
+    .attr("color", "white");
   content.append("a-text")
     .attr("value", label)
     .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
