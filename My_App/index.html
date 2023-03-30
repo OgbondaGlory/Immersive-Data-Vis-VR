@@ -13,6 +13,7 @@
     
     <script src="https://rawgit.com/mayognaise/aframe-mouse-drag-rotate-component/master/dist/aframe-mouse-drag-rotate-component.min.js"></script>
     <script src="https://unpkg.com/aframe-orbit-controls@0.1.9/dist/aframe-orbit-controls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
 
 </head>
 <body>
@@ -129,8 +130,7 @@
         <div class="right">
             <div class="custom-select">
                 <select id="statisticsSelect">
-                    <option value="">Statistics</option>
-                    <option value="distribution">Distribution</option>
+                    <option value="">Developer Mode</option>
                 </select>
             </div>
 
@@ -139,16 +139,21 @@
             <div class="box" id="box5">
                 <div class="box-content">
                     <!-- Add the content for box5 here -->
+                    <script>
+                        // Initialize the Ace editor
+                        var editor = ace.edit("box5");
+                        editor.setTheme("ace/theme/monokai");
+                        editor.getSession().setMode("ace/mode/javascript");
+                  
+                        // Set the initial code in the editor
+                        editor.setValue("function manipulateData() {\n  // Your data manipulation code here\n}");
+                      </script>
                   </div>
             </div>
 
 
 
-            <div class="box" id="box6">
-                <div class="box-content">
-                    <!-- Add the content for box6 here -->
-                  </div>
-            </div>
+            
         </div>
 
     </div>
