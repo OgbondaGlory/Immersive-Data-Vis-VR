@@ -101,47 +101,37 @@ document.getElementById("applyChanges").addEventListener("click", function() {
 });
 
 
+//Adding Interactive tooltips for HTML AND VR
+function formatTooltipContent(dataPoint, columns) {
+  var content = "<table>";
+
+  // Display the specified columns in the tooltip
+  columns.forEach(function (column) {
+    content += "<tr>";
+    content += `<td><strong>${column}:</strong></td>`;
+    content += `<td>${dataPoint[column]}</td>`;
+    content += "</tr>";
+  });
+
+  content += "</table>";
+  return content;
+}
+
+function formatVRTooltipContent(dataPoint, columns) {
+  let content = "";
+  columns.forEach(function (column) {
+    content += `${column}: ${dataPoint[column]}\n`;
+  });
+  return content;
+}
+
+
+
 
 // Initialize the Ace editor
 var editor = ace.edit("box5");
 editor.setTheme("ace/theme/chaos");
 editor.getSession().setMode("ace/mode/json");
-// Add custom styles
-// const aceCustomStyle = document.createElement('style');
-// aceCustomStyle.textContent = `
-//   .ace_twilight .ace_constant.ace_language.ace_string { /* JSON keys */
-//     color: #ff9900;
-//   }
-//   .ace_twilight .ace_constant.ace_numeric { /* JSON numbers */
-//     color: #66cc66;
-//   }
-//   .ace_twilight .ace_string.ace_quoted { /* JSON string values */
-//     color: blue;
-//   }
-// `;
-// document.head.appendChild(aceCustomStyle);
-
-
-//Let us try creating our own custom Theme here: 
-
-
-
-
-// // Set the initial code in the editor
-// editor.setValue(`function manipulateData(tableData) {
-//   // Sample data array for manipulation
-//   const sampleData = [
-//     {column1: 1, column2: 'A', column3: 10},
-//     {column1: 2, column2: 'B', column3: 20},
-//     {column1: 3, column2: 'C', column3: 30},
-//     {column1: 4, column2: 'D', column3: 40},
-//   ];
-
-//   // Your data manipulation code here
-
-//   // Return the manipulated data
-//   return manipulatedData;
-// }`);
 
 
 
@@ -180,7 +170,7 @@ function fetchTableData(tableName, event) {
           <tbody>
       `;
 
-      for (let i = 0; i < Math.min(10, data.length); i++) {
+      for (let i = 0; i < Math.min(5, data.length); i++) {
         const row = data[i];
         tableContent += `<tr>`;
         for (const columnName in row) {

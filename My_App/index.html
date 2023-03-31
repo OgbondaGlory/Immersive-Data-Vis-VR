@@ -48,10 +48,10 @@
 
 
 
-            <div class="box" id="box2"></div>
-            <div class="box-content">
+            <!-- <div class="box" id="box2"></div>
+            <div class="box-content"> -->
                 <!-- Add the content for box2 here -->
-              </div>
+              <!-- </div> -->
         </div>
 
         <div class="middle">
@@ -91,15 +91,21 @@
 
             <div class="box vr" id="box3">
                 <div id="tooltip" class="tooltip" style="display: none;">
-                    <div class="tooltip-content"></div>
-                  </div>
-                  
+                  <div class="tooltip-content"></div>
+                </div>
+              
                 <a-scene embedded cursor="rayOrigin: mouse">
-                    <a-entity id="helloworld" rotation="0 0 0" position="-0.01 1.6 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
-                    <a-camera position="0 1.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14">
-                    </a-camera>
-                  </a-scene>  
-            </div>
+                  <a-entity id="helloworld" rotation="0 0 0" position="-0.01 1.6 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
+                  
+                  <a-entity id="vr-tooltip" visible="false">
+                    <a-plane id="vr-tooltip-background" width="auto" height="auto" color="rgba(0, 0, 0, 0.8)" position="0 0 -0.01"></a-plane>
+                    <a-text id="vr-tooltip-content" color="#ffffff" width="1" height="1" wrap-count="40" align="left"></a-text>
+                  </a-entity>
+                  
+                  <a-camera position="0 1.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14"></a-camera>
+                </a-scene>
+              </div>
+              
 
             <div id="selected-table" class="selected-table">
                 <!-- The table name will be displayed here -->
@@ -133,11 +139,11 @@
 
 
         <div class="right">
-            <div class="custom-select">
+            <!-- <div class="custom-select">
                 <select id="statisticsSelect">
                     <option value="">Developer Mode</option>
                 </select>
-            </div>
+            </div> -->
 
             <button id="applyChanges">Apply Changes</button>
 
