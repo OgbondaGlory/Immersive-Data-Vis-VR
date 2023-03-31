@@ -75,6 +75,74 @@ function determineAxes(tableData) {
   return axes;
 }
 
+let currentTableData = null;
+let currentAxes = null;
+
+document.getElementById("applyChanges").addEventListener("click", function() {
+  if (!currentTableData || !currentAxes) {
+    console.warn("No table data or axes available.");
+    return;
+  }
+
+  var jsonData = editor.getValue();
+
+  var parsedData;
+  try {
+    parsedData = JSON.parse(jsonData);
+  } catch (error) {
+    console.error("Invalid JSON data in the editor:", error);
+    return;
+  }
+
+  var tableData = parsedData.tableData;
+  var axes = parsedData.axes;
+
+  update3DBarChart(tableData, axes);
+});
+
+
+
+// Initialize the Ace editor
+var editor = ace.edit("box5");
+editor.setTheme("ace/theme/chaos");
+editor.getSession().setMode("ace/mode/json");
+// Add custom styles
+// const aceCustomStyle = document.createElement('style');
+// aceCustomStyle.textContent = `
+//   .ace_twilight .ace_constant.ace_language.ace_string { /* JSON keys */
+//     color: #ff9900;
+//   }
+//   .ace_twilight .ace_constant.ace_numeric { /* JSON numbers */
+//     color: #66cc66;
+//   }
+//   .ace_twilight .ace_string.ace_quoted { /* JSON string values */
+//     color: blue;
+//   }
+// `;
+// document.head.appendChild(aceCustomStyle);
+
+
+//Let us try creating our own custom Theme here: 
+
+
+
+
+// // Set the initial code in the editor
+// editor.setValue(`function manipulateData(tableData) {
+//   // Sample data array for manipulation
+//   const sampleData = [
+//     {column1: 1, column2: 'A', column3: 10},
+//     {column1: 2, column2: 'B', column3: 20},
+//     {column1: 3, column2: 'C', column3: 30},
+//     {column1: 4, column2: 'D', column3: 40},
+//   ];
+
+//   // Your data manipulation code here
+
+//   // Return the manipulated data
+//   return manipulatedData;
+// }`);
+
 
 
 
@@ -112,7 +180,7 @@ function fetchTableData(tableName, event) {
           <tbody>
       `;
 
-      for (let i = 0; i < Math.min(5, data.length); i++) {
+      for (let i = 0; i < Math.min(10, data.length); i++) {
         const row = data[i];
         tableContent += `<tr>`;
         for (const columnName in row) {
@@ -128,6 +196,16 @@ function fetchTableData(tableName, event) {
 
 
       boxContent.innerHTML = tableContent;
+      
+// Set the initial code in the editor with the sample array
+      let sampleArray = JSON.stringify(data.slice(0, 5), null, 2);
+      editor.setValue(` Sample array:\n  // ${sampleArray.split('\n').join('\n  // ')}\n`);
+      
+      currentTableData = data;
+      currentAxes = determineAxes(data);
+      // Store the full dataset and axes in the editor
+      editor.setValue(JSON.stringify({tableData: data, axes: currentAxes}, null, 2));
+
       return data;
 
     })
@@ -142,10 +220,31 @@ document.querySelectorAll('.run-button').forEach(button => {
     fetchTableData(tableName, event)
       .then(tableData => {
         const axes = determineAxes(tableData);
-        update3DBarChart(tableData, axes); // Use the correct function name here
+        update3DBarChart(tableData, axes);
+
+        // Set the fetched table data as the default content of the code editor
+        // editor.setValue(JSON.stringify(tableData, null, 2));
       });
   });
 });
+
+function manipulateData(tableData) {
+  // Get all numerical columns in the data
+  const columns = Object.keys(tableData[0]);
+  const numericalColumns = columns.filter(column => !isNaN(parseFloat(tableData[0][column])));
+
+  // Select a random numerical column
+  const randomColumn = numericalColumns[Math.floor(Math.random() * numericalColumns.length)];
+
+  // Sort the data in ascending order based on the random numerical column
+  const sortedData = tableData.sort((a, b) => a[randomColumn] - b[randomColumn]);
+
+  // Return the sorted data
+  return sortedData;
+}
+
+
+
 
 
 

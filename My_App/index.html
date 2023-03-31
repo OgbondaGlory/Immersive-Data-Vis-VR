@@ -14,6 +14,7 @@
     <script src="https://rawgit.com/mayognaise/aframe-mouse-drag-rotate-component/master/dist/aframe-mouse-drag-rotate-component.min.js"></script>
     <script src="https://unpkg.com/aframe-orbit-controls@0.1.9/dist/aframe-orbit-controls.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ext-language_tools.js"></script>
 
 </head>
 <body>
@@ -89,6 +90,10 @@
 
 
             <div class="box vr" id="box3">
+                <div id="tooltip" class="tooltip" style="display: none;">
+                    <div class="tooltip-content"></div>
+                  </div>
+                  
                 <a-scene embedded cursor="rayOrigin: mouse">
                     <a-entity id="helloworld" rotation="0 0 0" position="-0.01 1.6 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
                     <a-camera position="0 1.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14">
@@ -134,20 +139,13 @@
                 </select>
             </div>
 
-            
+            <button id="applyChanges">Apply Changes</button>
+
 
             <div class="box" id="box5">
                 <div class="box-content">
                     <!-- Add the content for box5 here -->
-                    <script>
-                        // Initialize the Ace editor
-                        var editor = ace.edit("box5");
-                        editor.setTheme("ace/theme/monokai");
-                        editor.getSession().setMode("ace/mode/javascript");
-                  
-                        // Set the initial code in the editor
-                        editor.setValue("function manipulateData() {\n  // Your data manipulation code here\n}");
-                      </script>
+                      
                   </div>
             </div>
 

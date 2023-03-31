@@ -247,10 +247,28 @@ for (var i = 0; i < yTicks.length; i++) {
   .attr("align", "center")
   .attr("width", "8")
   .attr("color", "white");
+  function formatTooltipContent(dataPoint) {
+    // Replace this with the appropriate data point properties
+    const { firstName, lastName, gender, age } = dataPoint;
+    return `
+      <strong>Name:</strong> ${firstName} ${lastName}<br>
+      <strong>Gender:</strong> ${gender}<br>
+      <strong>Age:</strong> ${age}
+    `;
+  }
+  
 
 
 
 
+
+
+
+  function getMousePositionRelativeToPage(event) {
+    const { pageX, pageY } = event;
+    return { x: pageX, y: pageY };
+  }
+  
 
     //Online Function
     function update3DBarChart(tableData, axes) 
@@ -320,6 +338,35 @@ for (var i = 0; i < yTicks.length; i++) {
               },
             });
 
+            // ... existing code ...
+
+            myBars.on("mouseenter", function(d, i) {
+              const tooltip = document.getElementById("tooltip");
+              const tooltipContent = tooltip.querySelector(".tooltip-content");
+              // Replace tableData[i] with the correct data point from tableData
+              tooltipContent.innerHTML = formatTooltipContent(tableData[i]);
+              tooltip.style.display = "block";
+            });
+
+            myBars.on("mouseleave", function() {
+              const tooltip = document.getElementById("tooltip");
+              tooltip.style.display = "none";
+            });
+
+            // ... existing code ...
+            // ... existing code ...
+
+            myBars.on("mousemove", function(d, i) {
+              const mousePosition = getMousePositionRelativeToPage(d3.event);
+              const tooltip = document.getElementById("tooltip");
+              tooltip.style.left = `${mousePosition.x + 10}px`;
+              tooltip.style.top = `${mousePosition.y - 10}px`;
+            });
+
+            // ... existing code ...
+
+
+
             // Add X-axis
             var xAxis = content.append("a-box")
               .attr("width", chartWidth)
@@ -329,13 +376,12 @@ for (var i = 0; i < yTicks.length; i++) {
               .attr("color", "white");
 
             // Add Y-axis
-            // Add Y-axis
-var yAxis = content.append("a-box")
-.attr("width", 0.05)
-.attr("height", chartHeight)
-.attr("depth", 0.05)
-.attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
-.attr("color", "white");
+            var yAxis = content.append("a-box")
+            .attr("width", 0.05)
+            .attr("height", chartHeight)
+            .attr("depth", 0.05)
+            .attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
+            .attr("color", "white");
 
 
             // Add Z-axis
@@ -347,12 +393,10 @@ var yAxis = content.append("a-box")
               .attr("color", "white");
 
             // Modify the Y-scale to use d3.nice()
-           // Modify the Y-scale to use d3.nice()
-// Modify the Y-scale to use d3.nice()
-var yScale = d3.scale.linear()
-  .domain([0, d3.max(dataset)])
-  .range([0, 1])
-  .nice();
+            var yScale = d3.scale.linear()
+              .domain([0, d3.max(dataset)])
+              .range([0, 1])
+              .nice();
 
 
 
@@ -380,12 +424,12 @@ var yScale = d3.scale.linear()
             for (var i = 0; i < xTicks.length; i++) {
               var x = xScale(xTicks[i]);
               var label = xTicks[i];
-              content.append("a-box")
-              .attr("width", 0.05)
-              .attr("height", 0.05)
-              .attr("depth", 0.05)
-              .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.075) + " " + (chartDepth / 2 + 0.05))
-              .attr("color", "white");
+                content.append("a-box")
+                .attr("width", 0.05)
+                .attr("height", 0.05)
+                .attr("depth", 0.05)
+                .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.075) + " " + (chartDepth / 2 + 0.05))
+                .attr("color", "white");
 
                 content.append("a-text")
                 .attr("value", label)
@@ -444,25 +488,25 @@ var yScale = d3.scale.linear()
 
                 // Add Y-axis tick marks and labels
                 // Add Y-axis tick marks and labels
-// Add Y-axis tick marks and labels
-// Add Y-axis tick marks and labels
-var yTicks = yScale.ticks(yTickCount);
-for (var i = 0; i < yTicks.length; i++) {
-  var y = yScale(yTicks[i]);
-  var label = yTicks[i];
-  content.append("a-box")
-    .attr("width", 0.05)
-    .attr("height", 0.05)
-    .attr("depth", 0.05)
-    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
-    .attr("color", "white");
-  content.append("a-text")
-    .attr("value", label)
-    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
-    .attr("align", "right")
-    .attr("width", "12")
-    .attr("color", "white");
-}
+                // Add Y-axis tick marks and labels
+                // Add Y-axis tick marks and labels
+                var yTicks = yScale.ticks(yTickCount);
+                for (var i = 0; i < yTicks.length; i++) {
+                  var y = yScale(yTicks[i]);
+                  var label = yTicks[i];
+                  content.append("a-box")
+                    .attr("width", 0.05)
+                    .attr("height", 0.05)
+                    .attr("depth", 0.05)
+                    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
+                    .attr("color", "white");
+                  content.append("a-text")
+                    .attr("value", label)
+                    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
+                    .attr("align", "right")
+                    .attr("width", "12")
+                    .attr("color", "white");
+                }
 
 
 

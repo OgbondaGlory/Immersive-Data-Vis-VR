@@ -37,6 +37,8 @@ body {
     background-color: rgba(0, 0, 0, 0.6); /* Control opacity with the alpha value */
     z-index: 1;
     border-radius: 15px; /* Add border-radius to the overlay */
+    pointer-events: none; /* Add this line to prevent the ::before element from interfering with clicks */
+
 
 }
 
@@ -91,6 +93,9 @@ body {
 #box5 {
     background-color: #0E0808;
     height: calc(127% + 95px); 
+    z-index: 1000; /* Add this line to set a higher z-index */
+
+    
 
 }
 
@@ -315,3 +320,21 @@ button:hover {
   }
   
   
+
+  /* Customise 3D bar chart  */
+  .tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 12px;
+    pointer-events: none;
+  }
+  
+  .tooltip-content {
+    white-space: nowrap;
+  }
+  
+
