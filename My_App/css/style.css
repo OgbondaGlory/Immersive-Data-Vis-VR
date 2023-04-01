@@ -21,7 +21,7 @@ body {
 
 .box {
     width: 100%;
-    min-height: 50%;
+    max-height: 100%; /* Adjust this value if needed */
     margin-bottom: 20px;
     position: relative; /* Added for the pseudo-element */
     border-radius: 15px; /* Add border-radius to all boxes */
@@ -59,7 +59,7 @@ body {
     height: 85%;
 }
 .middle .small {
-    /* height: 160px; */
+  max-height: 100%; /* Adjust this value if needed */
 }
 
 .right .box {
@@ -69,6 +69,8 @@ body {
 /* Unique colors for each box */
 #box1 {
     background-color: #0E0808;
+        height: calc(127% + 95px); 
+
 
 }
 
@@ -83,6 +85,8 @@ body {
 #box4 {
     background-color: #0E0808;
     border-radius: 0; /* Remove border-radius for box4 */
+    max-height: 100%; /* Adjust this value if needed */
+
 
 }
 

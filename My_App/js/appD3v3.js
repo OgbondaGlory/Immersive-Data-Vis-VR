@@ -270,102 +270,143 @@ for (var i = 0; i < yTicks.length; i++) {
   }
   
 
-    //Online Function
-    function update3DBarChart(tableData, axes) 
-    {
 
-      
+function update3DBarChart(tableData, axes) {
 
-              // Clear existing content
-              var content = d3.select("#helloworld").html("");
+  // Clear existing content
+  var content = d3.select("#helloworld").html("");
 
-              // Map the dataset from tableData using only axes.y and sort it
-              var dataset = tableData
-                  .sort((a, b) => a[axes.y] - b[axes.y])
-                  .map((row) => row[axes.y]);
+  // Map the dataset from tableData using only axes.y and sort it
+  var dataset = tableData
+    .sort((a, b) => a[axes.y] - b[axes.y])
+    .map((row) => row[axes.y]);
 
-              const maxHeight = Math.max(...dataset);
-              const logMaxHeight = Math.log10(maxHeight);
-              const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
-              const rescaledMaxHeight = maxHeight * scalingFactor;
-              // Calculate the number of Y-axis ticks based on the custom function
-              var minValue = 0;
-              var maxValue = d3.max(dataset);
-              var scaleFactor = 1.2; // Adjust this value to change the number of ticks
+  const maxHeight = Math.max(...dataset);
+  const logMaxHeight = Math.log10(maxHeight);
+  const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
+  const rescaledMaxHeight = maxHeight * scalingFactor;
+  
+  // Calculate the number of Y-axis ticks based on the custom function
+  var minValue = 0;
+  var maxValue = d3.max(dataset);
+  var scaleFactor = 1.2; // Adjust this value to change the number of ticks
+
+  var gridMax = Math.ceil(Math.sqrt(dataset.length));
+  var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+  var chartHeight = d3.max(dataset) / 2;
+  var chartDepth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+
+  var myBars = content
+    .selectAll("a-box.bar")
+    .data(dataset)
+    .enter()
+    .append("a-box")
+    .classed("bar", true);
+
+  myBars.attr({
+    position: function (d, i) {
+      var x = i % gridMax;
+      var z = Math.floor(i / gridMax);
+      var y = (d * scalingFactor) / 4 - chartHeight / 2;
+      var posX = x * 1.1 - chartWidth / 2 + 0.45;
+      var posZ = -z * 1.1 + chartDepth / 2 - 0.5;
+      return posX + " " + y + " " + posZ;
+    },
+    height: function (d) {
+      return (d * scalingFactor) / 2;
+    },
+    width: function (d) {
+      return 0.9;
+    },
+    depth: function (d) {
+      return 0.9;
+    },
+    color: function (d) {
+      var letters = "0123456789ABCDEF".split("");
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    },
+  });
+
+  // ... existing code ...
+
+// Add the VR tooltip to the 'mouseenter' event listener
+myBars.on("mouseenter", function (d, i) {
+  const tooltip = document.getElementById("tooltip");
+  const tooltipContent = tooltip.querySelector(".tooltip-content");
+  const vrTooltip = document.getElementById("vr-tooltip");
+  const vrTooltipContent = document.getElementById("vr-tooltip-content");
+  const columns = [axes.x, axes.y, axes.z];
+  const formattedContent = formatTooltipContent(tableData[i], columns);
+  const vrFormattedContent = formatVRTooltipContent(tableData[i], columns);
+
+  tooltipContent.innerHTML = formattedContent;
+  tooltip.style.display = "block";
+
+  vrTooltipContent.setAttribute("value", vrFormattedContent);
+  vrTooltip.setAttribute("visible", true);
+
+  const bar = this;
+  const barPosition = bar.getAttribute("position");
+
+  const barHeight = d * scalingFactor / 2;
+  const tooltipOffset = -10; // Adjust this value to change the distance between the tooltip and the bar in the VR scene
+
+  // Calculate the position of the VR tooltip relative to the bar
+  vrTooltip.setAttribute("position", {
+    x: parseFloat(barPosition.x),
+    y: parseFloat(barPosition.y) + barHeight + tooltipOffset,
+    z: parseFloat(barPosition.z),
+  });
+});
 
 
 
-              var gridMax = Math.ceil(Math.sqrt(dataset.length));
-              var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
-              var chartHeight = d3.max(dataset) / 2;
-              var chartDepth = gridMax * 0.9 + (gridMax - 1) * 0.1;
-                  
-                  
-                  console.log(d3.scale)
 
-              var myBars = content
-              .selectAll("a-box.bar")
-              .data(dataset)
-              .enter()
-              .append("a-box")
-              .classed("bar", true);
-          
-            myBars.attr({
-              position: function (d, i) {
-                var x = i % gridMax;
-                var z = Math.floor(i / gridMax);
-                var y = (d * scalingFactor) / 4 - chartHeight / 2;
-                var posX = x * 1.1 - chartWidth / 2 + 0.45;
-                var posZ = - z * 1.1 + chartDepth / 2 - 0.5 ;
-                return posX + " " + y + " " + posZ;
-              },
-              height: function (d) {
-                return (d * scalingFactor) / 2;
-              },
-              width: function (d) {
-                return 0.9;
-              },
-              depth: function (d) {
-                return 0.9;
-              },
-              color: function (d) {
-                var letters = "0123456789ABCDEF".split("");
-                var color = "#";
-                for (var i = 0; i < 6; i++) {
-                  color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-              },
-            });
+
+// Add the VR tooltip to the 'mouseleave' event listener
+myBars.on("mouseleave", function () {
+  const tooltip = document.getElementById("tooltip");
+  const vrTooltip = document.getElementById("vr-tooltip");
+  tooltip.style.display = "none";
+  vrTooltip.setAttribute("visible", false);
+});
+
+// Add the VR tooltip to the 'mousemove' event listener
+myBars.on("mousemove", function (d, i) {
+  const mousePosition = getMousePositionRelativeToPage(d3.event);
+  const tooltip = document.getElementById("tooltip");
+  const vrTooltip = document.getElementById("vr-tooltip");
+  const bar = this;
+  const barPosition = bar.getAttribute("position");
+
+  tooltip.style.left = `${mousePosition.x + 10}px`;
+  tooltip.style.top = `${mousePosition.y - 10}px`;
+
+  const barHeight = d * scalingFactor / 2;
+  const tooltipOffsetY = 0.1; // Adjust this value to change the distance between the tooltip and the bar (Y-axis)
+  const tooltipOffsetZ = 0.1; // Adjust this value to change the distance between the tooltip and the bar (Z-axis)
+  vrTooltip.setAttribute("position", {
+    x: parseFloat(barPosition.x),
+    y: parseFloat(barPosition.y) + barHeight + tooltipOffsetY,
+    z: parseFloat(barPosition.z) + tooltipOffsetZ,
+  });
+});
+
+
+
+
+
 
             // ... existing code ...
 
-            myBars.on("mouseenter", function(d, i) {
-              const tooltip = document.getElementById("tooltip");
-              const tooltipContent = tooltip.querySelector(".tooltip-content");
-              // Replace tableData[i] with the correct data point from tableData
-              tooltipContent.innerHTML = formatTooltipContent(tableData[i]);
-              tooltip.style.display = "block";
-            });
-
-            myBars.on("mouseleave", function() {
-              const tooltip = document.getElementById("tooltip");
-              tooltip.style.display = "none";
-            });
-
-            // ... existing code ...
-            // ... existing code ...
-
-            myBars.on("mousemove", function(d, i) {
-              const mousePosition = getMousePositionRelativeToPage(d3.event);
-              const tooltip = document.getElementById("tooltip");
-              tooltip.style.left = `${mousePosition.x + 10}px`;
-              tooltip.style.top = `${mousePosition.y - 10}px`;
-            });
-
-            // ... existing code ...
 
 
+
+            
 
             // Add X-axis
             var xAxis = content.append("a-box")
@@ -398,22 +439,11 @@ for (var i = 0; i < yTicks.length; i++) {
               .range([0, 1])
               .nice();
 
-
-
-            // Create X and Z scales with d3.nice()
-            // var xScale = d3.scale.linear()
-            //     .domain([0, gridMax - 1])
-            //     .range([0, chartWidth])
-            //     .nice();
-            // Create an ordinal scale for the X-axis using the categorical data
-            
-            
             var xScale = d3.scale.linear()
             .domain([0, gridMax - 1])
             .range([0, chartWidth + 0.2])
             .nice();
           
-            
             var zScale = d3.scale.linear()
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
                 .range([0, chartDepth])
@@ -440,8 +470,6 @@ for (var i = 0; i < yTicks.length; i++) {
                 .attr("color", "white");
               
             }
-            
-            
 
             console.log("test")
             console.log(content)
@@ -465,7 +493,6 @@ for (var i = 0; i < yTicks.length; i++) {
                 .attr("color", "white");
                 }
 
-
                 function calculateTickCount(minValue, maxValue, scaleFactor) {
                   var dataRange = maxValue - minValue;
                             
@@ -481,9 +508,6 @@ for (var i = 0; i < yTicks.length; i++) {
                   return Math.ceil(baseTickCount * scaleFactor);
               }
               
-              
-                
-                
                 var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
                 // Add Y-axis tick marks and labels
@@ -508,9 +532,6 @@ for (var i = 0; i < yTicks.length; i++) {
                     .attr("color", "white");
                 }
 
-
-
-                
                 // Add X-axis label
                 content.append("a-text")
                 .attr("value", "X Axis")
@@ -552,3 +573,5 @@ for (var i = 0; i < yTicks.length; i++) {
 
 
 
+    
+    
