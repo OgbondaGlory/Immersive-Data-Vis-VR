@@ -439,22 +439,11 @@ myBars.on("mousemove", function (d, i) {
               .range([0, 1])
               .nice();
 
-
-
-            // Create X and Z scales with d3.nice()
-            // var xScale = d3.scale.linear()
-            //     .domain([0, gridMax - 1])
-            //     .range([0, chartWidth])
-            //     .nice();
-            // Create an ordinal scale for the X-axis using the categorical data
-            
-            
             var xScale = d3.scale.linear()
             .domain([0, gridMax - 1])
             .range([0, chartWidth + 0.2])
             .nice();
           
-            
             var zScale = d3.scale.linear()
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
                 .range([0, chartDepth])
@@ -481,8 +470,6 @@ myBars.on("mousemove", function (d, i) {
                 .attr("color", "white");
               
             }
-            
-            
 
             console.log("test")
             console.log(content)
@@ -506,7 +493,6 @@ myBars.on("mousemove", function (d, i) {
                 .attr("color", "white");
                 }
 
-
                 function calculateTickCount(minValue, maxValue, scaleFactor) {
                   var dataRange = maxValue - minValue;
                             
@@ -522,9 +508,6 @@ myBars.on("mousemove", function (d, i) {
                   return Math.ceil(baseTickCount * scaleFactor);
               }
               
-              
-                
-                
                 var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
                 // Add Y-axis tick marks and labels
@@ -549,9 +532,6 @@ myBars.on("mousemove", function (d, i) {
                     .attr("color", "white");
                 }
 
-
-
-                
                 // Add X-axis label
                 content.append("a-text")
                 .attr("value", "X Axis")
