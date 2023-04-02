@@ -271,7 +271,7 @@ for (var i = 0; i < yTicks.length; i++) {
   
 
 
-function update3DBarChart(tableData, axes) {
+function update3DBarChart(tableData, axes, selectedBar = null) {
 
   // Clear existing content
   var content = d3.select("#helloworld").html("");
@@ -285,6 +285,7 @@ function update3DBarChart(tableData, axes) {
   const logMaxHeight = Math.log10(maxHeight);
   const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
   const rescaledMaxHeight = maxHeight * scalingFactor;
+  
   
   // Calculate the number of Y-axis ticks based on the custom function
   var minValue = 0;
@@ -329,8 +330,20 @@ function update3DBarChart(tableData, axes) {
       }
       return color;
     },
-  });
+    "data-original-color": function (d) {
+      var letters = "0123456789ABCDEF".split("");
+      var color = "#";
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    },
 
+  });
+ // Add a function to determine if two data points are related based on their values
+ function areRelated(value1, value2, tolerance) {
+  return Math.abs(value1 - value2) <= tolerance;
+}
   // ... existing code ...
 
 // Add the VR tooltip to the 'mouseenter' event listener
@@ -361,11 +374,17 @@ myBars.on("mouseenter", function (d, i) {
     y: parseFloat(barPosition.y) + barHeight + tooltipOffset,
     z: parseFloat(barPosition.z),
   });
+
+ // Change opacity on hover
+ // Store the original color and set the new color with reduced opacity
+ const isSelected = bar.getAttribute("data-selected") === "true";
+ if (!isSelected) {
+   const originalColor = bar.getAttribute("material").color;
+   bar.setAttribute("data-original-color", originalColor);
+   bar.setAttribute("material", { color: originalColor, opacity: 0.5, transparent: true });
+ }
+
 });
-
-
-
-
 
 // Add the VR tooltip to the 'mouseleave' event listener
 myBars.on("mouseleave", function () {
@@ -373,6 +392,15 @@ myBars.on("mouseleave", function () {
   const vrTooltip = document.getElementById("vr-tooltip");
   tooltip.style.display = "none";
   vrTooltip.setAttribute("visible", false);
+
+   // Reset the color and opacity when the mouse leaves
+   const bar = this;
+   const isSelected = bar.getAttribute("data-selected") === "true";
+   const originalColor = bar.getAttribute("data-original-color");
+ 
+   if (!isSelected) {
+     bar.setAttribute("material", { color: originalColor, opacity: 1, transparent: false });
+   }
 });
 
 // Add the VR tooltip to the 'mousemove' event listener
@@ -396,17 +424,32 @@ myBars.on("mousemove", function (d, i) {
   });
 });
 
+// Modify the 'click' event listener to toggle the "selected" state and change the color to green
+// Modify the 'click' event listener to toggle the "selected" state and change the color to green
+myBars.on("click", function (d, i) {
+  const bar = this;
+  const isSelected = bar.getAttribute("data-selected") === "true";
+  const originalColor = bar.getAttribute("data-original-color");
+
+  if (isSelected) {
+    // Reset the color when the bar is deselected
+    bar.setAttribute("material", { color: originalColor });
+    bar.setAttribute("data-selected", "false");
+  } else {
+    // Set the color to light green when the bar is selected
+    bar.setAttribute("material", { color: "#90EE90" });
+    bar.setAttribute("data-selected", "true");
+  }
+});
+
+
+
 
 
 
 
 
             // ... existing code ...
-
-
-
-
-            
 
             // Add X-axis
             var xAxis = content.append("a-box")
