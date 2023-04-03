@@ -99,6 +99,7 @@ body {
     height: calc(127% + 95px); 
     z-index: 1000; /* Add this line to set a higher z-index */
 
+
     
 
 }
@@ -111,6 +112,13 @@ body {
 a {
 	color: #ffffff;
 }
+
+/* Dropdown list item hover styling */
+.dropdown-content a:hover {
+  background-color: darkgrey !important;
+}
+
+
 
 .menu {
 	position: absolute;
@@ -157,26 +165,148 @@ a {
 }
 
 button {
-    opacity: 0.5;
-    text-align: center;
-    color: black;
-    background: rgba(127,255,255,0.85);
-    outline: 5px solid rgba(12,25,25,1.0);
-    border: 0px;
-    margin-bottom: 0px;
-    font-size: 16;
-	border: 0px;
-	padding: 5px 10px;
-	cursor: pointer;
-    margin: 10px;
+  /* opacity: 0.5; */
+  text-align: center;
+  color: black;
+  background: white; /* Change background color to white */
+  outline: 5px solid rgba(12,25,25,1.0);
+  border: 0px;
+  margin-bottom: 0px;
+  font-size: 16;
+  border: 0px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 10px;
+  height: auto; /* Add this to adjust the height */
+  line-height: 1; /* Add this to adjust the line height */
+  border-radius: 5px;
+
 }
 button:hover {
-    color: rgba(127,255,255,0.85);
-    background: black;
+  color: white;
+  background: black; /* Change hover background color to black */
 }
 
 
-  
+/* Buttons */
+#refresh-button {
+  background-color: white;
+  color: black;
+  font-size: 12px; /* Adjust the font size to make the button smaller */
+  padding: 4px 8px; /* Adjust the padding to make the button smaller */
+  border: none;
+  cursor: pointer;
+  position: absolute; /* Add this to position the button to the right end of the div */
+  top: 0; /* Add this to position the button at the top of the div */
+  right: 0; /* Add this to position the button at the right end of the div */
+  border-radius: 7px; /* Add border-radius to the refresh button */
+}
+
+#refresh-button:hover {
+  background-color: black;
+  color: white;
+}
+.run-button {
+  background-color: white;
+  color: black;
+  font-size: 12px; /* Adjust the font size to make the button smaller */
+  padding: 4px 8px; /* Adjust the padding to make the button smaller */
+  border: none;
+  cursor: pointer;
+  text-align: right; /* Align the button to the right end of the table cell */
+  border-radius: 7px; /* Add border-radius to the run button */
+}
+
+
+.run-button:hover {
+  background-color: black;
+  color: white;
+}
+
+
+/* Custom file upload label */
+.custom-file-upload {
+  display: inline-block;
+  color: black;
+  background: white;
+  outline: 5px solid rgba(12, 25, 25, 1.0);
+  border: 0px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.custom-file-upload:hover {
+  color: white;
+  background: black;
+}
+
+/* Submit button */
+#uploadForm input[type="submit"] {
+  color: black;
+  background: white;
+  outline: 5px solid rgba(12, 25, 25, 1.0);
+  border: 0px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 5px; /* Add border-radius */
+  font-size: 13px;
+  text-align: center;
+}
+
+#uploadForm input[type="submit"]:hover {
+  color: white;
+  background: black;
+}
+
+
+
+
+
+
+
+/* Style Actions buttons */
+.actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 5px;
+  border-radius: 5px;
+
+}
+
+.actions select {
+  background: white;
+  color: black;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  height: auto;
+  line-height: 1;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.actions select:hover {
+  background: black;
+  color: white;
+}
+
+.actions option {
+  background: white;
+  color: black;
+}
+
+
+
+
+
+
+
 
 /* BOX 1 Table List */
 
@@ -234,40 +364,7 @@ button:hover {
   }
   
 
-  /* Buttons */
-  #refresh-button {
-    background-color: white;
-    color: black;
-    font-size: 12px; /* Adjust the font size to make the button smaller */
-    padding: 4px 8px; /* Adjust the padding to make the button smaller */
-    border: none;
-    cursor: pointer;
-    position: absolute; /* Add this to position the button to the right end of the div */
-    top: 0; /* Add this to position the button at the top of the div */
-    right: 0; /* Add this to position the button at the right end of the div */
-    border-radius: 7px; /* Add border-radius to the refresh button */
-  }
   
-  #refresh-button:hover {
-    background-color: blue;
-    color: white;
-  }
-  .run-button {
-    background-color: white;
-    color: black;
-    font-size: 12px; /* Adjust the font size to make the button smaller */
-    padding: 4px 8px; /* Adjust the padding to make the button smaller */
-    border: none;
-    cursor: pointer;
-    text-align: right; /* Align the button to the right end of the table cell */
-    border-radius: 7px; /* Add border-radius to the run button */
-  }
-  
-  
-  .run-button:hover {
-    background-color: blue;
-    color: white;
-  }
 
   /* dISPALY 5 ROWS BOX4 */
   

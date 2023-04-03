@@ -269,77 +269,169 @@ for (var i = 0; i < yTicks.length; i++) {
     return { x: pageX, y: pageY };
   }
   
-
-
-function update3DBarChart(tableData, axes, selectedBar = null) {
-
-  // Clear existing content
-  var content = d3.select("#helloworld").html("");
-
-  // Map the dataset from tableData using only axes.y and sort it
-  var dataset = tableData
-    .sort((a, b) => a[axes.y] - b[axes.y])
-    .map((row) => row[axes.y]);
-
-  const maxHeight = Math.max(...dataset);
-  const logMaxHeight = Math.log10(maxHeight);
-  const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
-  const rescaledMaxHeight = maxHeight * scalingFactor;
+  const undoStack = [];
+  const redoStack = [];
   
+  function saveSceneState() {
+    const scene = document.querySelector('a-scene');
+    const sceneState = scene.innerHTML;
+    undoStack.push(sceneState);
+    localStorage.setItem('savedSceneState', sceneState);
+  }
   
-  // Calculate the number of Y-axis ticks based on the custom function
-  var minValue = 0;
-  var maxValue = d3.max(dataset);
-  var scaleFactor = 1.2; // Adjust this value to change the number of ticks
+  function undo() {
+    if (undoStack.length === 0) {
+      return;
+    }
+  
+    const currentState = undoStack.pop();
+    redoStack.push(currentState);
+  
+    if (undoStack.length > 0) {
+      const prevState = undoStack[undoStack.length - 1];
+      const scene = document.querySelector('a-scene');
+      scene.innerHTML = prevState;
+      localStorage.setItem('savedSceneState', prevState);
+    }
+  }
+  
+  function redo() {
+    if (redoStack.length === 0) {
+      return;
+    }
+  
+    const nextState = redoStack.pop();
+    undoStack.push(nextState);
+  
+    const scene = document.querySelector('a-scene');
+    scene.innerHTML = nextState;
+    localStorage.setItem('savedSceneState', nextState);
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedSceneState = localStorage.getItem('savedSceneState');
+    if (savedSceneState) {
+      const scene = document.querySelector('a-scene');
+      scene.innerHTML = savedSceneState;
+      undoStack.push(savedSceneState);
+    }
+  
+    const helloworld = document.querySelector('#helloworld');
+  
+    helloworld.addEventListener('componentchanged', (event) => {
+      if (event.detail.name === 'position' || event.detail.name === 'rotation' || event.detail.name === 'scale') {
+        saveSceneState();
+        }
+        });
+        
+        const undoBtn = document.querySelector('#undo');
+        const redoBtn = document.querySelector('#redo');
+        
+        undoBtn.addEventListener('click', () => {
+        undo();
+        });
+        
+        redoBtn.addEventListener('click', () => {
+        redo();
+        });
+        });
+  
 
-  var gridMax = Math.ceil(Math.sqrt(dataset.length));
-  var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
-  var chartHeight = d3.max(dataset) / 2;
-  var chartDepth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+        function createColorScale(minHeight, maxHeight) {
+          const colorDomain = [
+            minHeight,
+            minHeight + (maxHeight - minHeight) / 3,
+            minHeight + (2 * (maxHeight - minHeight)) / 3,
+            maxHeight,
+          ];
+        
+          const colorRange = [
+            "steelblue", // Low height
+            "orange", // Medium height
+            "red", // High height
+          ];
+        
+          const colorScale = d3.scale.linear()
+            .domain(colorDomain)
+            .range(colorRange)
+            .interpolate(d3.interpolateHcl);
+        
+          return colorScale;
+        }
+        
+        
 
-  var myBars = content
-    .selectAll("a-box.bar")
-    .data(dataset)
-    .enter()
-    .append("a-box")
-    .classed("bar", true);
+        function update3DBarChart(tableData, axes, selectedBar = null) {
 
-  myBars.attr({
-    position: function (d, i) {
-      var x = i % gridMax;
-      var z = Math.floor(i / gridMax);
-      var y = (d * scalingFactor) / 4 - chartHeight / 2;
-      var posX = x * 1.1 - chartWidth / 2 + 0.45;
-      var posZ = -z * 1.1 + chartDepth / 2 - 0.5;
-      return posX + " " + y + " " + posZ;
-    },
-    height: function (d) {
-      return (d * scalingFactor) / 2;
-    },
-    width: function (d) {
-      return 0.9;
-    },
-    depth: function (d) {
-      return 0.9;
-    },
-    color: function (d) {
-      var letters = "0123456789ABCDEF".split("");
-      var color = "#";
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    },
-    "data-original-color": function (d) {
-      var letters = "0123456789ABCDEF".split("");
-      var color = "#";
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    },
-
-  });
+          // Clear existing content
+          var content = d3.select("#helloworld").html("");
+        
+          // Map the dataset from tableData using only axes.y and sort it
+          var dataset = tableData
+            .sort((a, b) => a[axes.y] - b[axes.y])
+            .map((row) => row[axes.y]);
+        
+          const maxHeight = Math.max(...dataset);
+          const logMaxHeight = Math.log10(maxHeight);
+          const scalingFactor = maxHeight > 50 ? 50 / (logMaxHeight * maxHeight) : 1;
+        
+          const minHeight = Math.min(...dataset);
+          const yOffset = (minHeight * scalingFactor) / 4;
+        
+          // Calculate the number of Y-axis ticks based on the custom function
+          var minValue = 0;
+          var maxValue = d3.max(dataset);
+          var scaleFactor = 1.2; // Adjust this value to change the number of ticks
+        
+          var gridMax = Math.ceil(Math.sqrt(dataset.length));
+          var chartWidth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+          var chartHeight = d3.max(dataset) / 2;
+          var chartDepth = gridMax * 0.9 + (gridMax - 1) * 0.1;
+        
+          // Create the color scale
+          const colorScale = createColorScale(minValue, maxValue);
+        
+          var myBars = content
+            .selectAll("a-box.bar")
+            .data(dataset)
+            .enter()
+            .append("a-box")
+            .classed("bar", true);
+        
+          myBars.attr({
+            position: function (d, i) {
+              var x = i % gridMax;
+              var z = Math.floor(i / gridMax);
+              var y = (d * scalingFactor - minHeight * scalingFactor) / 4;
+              var posX = x * 1.1 - chartWidth / 2 + 0.45;
+              var posZ = -z * 1.1 + chartDepth / 2 - 0.5;
+              return posX + " " + y + " " + posZ;
+            },
+            height: function (d) {
+              return (d * scalingFactor) / 2;
+            },
+            width: function (d) {
+              return 0.9;
+            },
+            depth: function (d) {
+              return 0.9;
+            },
+            color: function (d, i) {
+              const barHeight = d * scalingFactor;
+              if (selectedBar === i) {
+                return "red";
+              } else {
+                return colorScale(barHeight);
+              }
+            },
+        
+            "data-original-color": function (d) {
+              const barHeight = d * scalingFactor;
+              return colorScale(barHeight);
+            },
+        
+          });
+        
  // Add a function to determine if two data points are related based on their values
  function areRelated(value1, value2, tolerance) {
   return Math.abs(value1 - value2) <= tolerance;
@@ -425,7 +517,6 @@ myBars.on("mousemove", function (d, i) {
 });
 
 // Modify the 'click' event listener to toggle the "selected" state and change the color to green
-// Modify the 'click' event listener to toggle the "selected" state and change the color to green
 myBars.on("click", function (d, i) {
   const bar = this;
   const isSelected = bar.getAttribute("data-selected") === "true";
@@ -442,44 +533,38 @@ myBars.on("click", function (d, i) {
   }
 });
 
+// Add scale line boxes for X, Y, and Z axes
+var scaleLineWidth = 0.05;
+var scaleLineHeight = 0.05;
 
+// Add X-axis scale line box
+content.append("a-box")
+  .attr("width", chartWidth)
+  .attr("height", scaleLineHeight)
+  .attr("depth", scaleLineWidth)
+  .attr("position", "0 " + (-yOffset - 0.075) + " " + (chartDepth / 2 + 0.025))
+  .attr("color", "white");
 
+// Add Y-axis scale line box
+content.append("a-box")
+  .attr("width", scaleLineWidth)
+  .attr("height", chartHeight * scalingFactor)
+  .attr("depth", scaleLineHeight)
+  .attr("position", (-chartWidth / 2 - 0.075) + " " + ((chartHeight * scalingFactor) / 2 - yOffset) + " " + (chartDepth / 2 + 0.025))
+  .attr("color", "white");
 
-
-
-
-
-            // ... existing code ...
-
-            // Add X-axis
-            var xAxis = content.append("a-box")
-              .attr("width", chartWidth)
-              .attr("height", 0.05)
-              .attr("depth", 0.05)
-              .attr("position", "0 " + (-chartHeight / 2 - 0.025) + " " + (chartDepth / 2 + 0.025))
-              .attr("color", "white");
-
-            // Add Y-axis
-            var yAxis = content.append("a-box")
-            .attr("width", 0.05)
-            .attr("height", chartHeight)
-            .attr("depth", 0.05)
-            .attr("position", (-chartWidth / 2 - 0.025) + " 0 " + (chartDepth / 2 + 0.025))
-            .attr("color", "white");
-
-
-            // Add Z-axis
-            var zAxis = content.append("a-box")
-              .attr("width", 0.05)
-              .attr("height", 0.05)
-              .attr("depth", chartDepth)
-              .attr("position", (chartWidth / 2 + 0.25) + " -" + (chartHeight / 2 + 0.025) + " 0")
-              .attr("color", "white");
+// Add Z-axis scale line box
+content.append("a-box")
+  .attr("width", scaleLineHeight)
+  .attr("height", scaleLineWidth)
+  .attr("depth", chartDepth)
+  .attr("position", (chartWidth / 2 + 0.25) + " " + (-yOffset - 0.075) + " 0")
+  .attr("color", "white");
 
             // Modify the Y-scale to use d3.nice()
             var yScale = d3.scale.linear()
-              .domain([0, d3.max(dataset)])
-              .range([0, 1])
+            .domain([0, d3.max(dataset) * scalingFactor])
+            .range([0, 1])
               .nice();
 
             var xScale = d3.scale.linear()
@@ -492,49 +577,49 @@ myBars.on("click", function (d, i) {
                 .range([0, chartDepth])
                 .nice();
 
-            // Add X-axis tick marks and labels
-            var xTicks = Array.from({ length: gridMax }, (_, i) => i);
-            for (var i = 0; i < xTicks.length; i++) {
-              var x = xScale(xTicks[i]);
-              var label = xTicks[i];
-                content.append("a-box")
-                .attr("width", 0.05)
-                .attr("height", 0.05)
-                .attr("depth", 0.05)
-                .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.075) + " " + (chartDepth / 2 + 0.05))
-                .attr("color", "white");
+// Add X-axis tick marks and labels
+var xTicks = Array.from({ length: gridMax }, (_, i) => i);
+for (var i = 0; i < xTicks.length; i++) {
+  var x = xScale(xTicks[i]);
+  var label = xTicks[i];
+    content.append("a-box")
+    .attr("width", 0.05)
+    .attr("height", 0.05)
+    .attr("depth", 0.05)
+    .attr("position", (x * 1.1 - chartWidth / 2) + " " + (-yOffset - 0.075) + " " + (chartDepth / 2 + 0.05))
+    .attr("color", "white");
 
-                content.append("a-text")
-                .attr("value", label)
-                .attr("position", (x * 1.1 - chartWidth / 2) + " -" + (chartHeight / 2 + 0.125) + " " + (chartDepth / 2 + 0.05))
-                .attr("rotation", "0 0 90")
-                .attr("align", "center")
-                .attr("width", "12")
-                .attr("color", "white");
-              
-            }
+    content.append("a-text")
+    .attr("value", label)
+    .attr("position", (x * 1.1 - chartWidth / 2) + " " + (-yOffset - 0.125) + " " + (chartDepth / 2 + 0.05))
+    .attr("rotation", "0 0 90")
+    .attr("align", "center")
+    .attr("width", "12")
+    .attr("color", "white");
+  
+}
 
             console.log("test")
             console.log(content)
 
-            // Add Z-axis tick marks and labels
-            var zTicks = zScale.ticks(Math.ceil(dataset.length / gridMax));
-            for (var i = 0; i < zTicks.length; i++) {
-                var z = zScale(zTicks[i]) - chartDepth / 2;
-                var label = zTicks[i] + 1;
-              content.append("a-box")
-                .attr("width", 0.05)
-                .attr("height", 0.05)
-                .attr("depth", 0.05)
-                .attr("position", (chartWidth / 2 + 0.05) + " -" + (chartHeight / 2 + 0.075) + " " + z)
-                .attr("color", "white");
-              content.append("a-text")
-                .attr("value", label)
-                .attr("position", (chartWidth /2 + 0.15) + " -" + (chartHeight / 2 + 0.125) + " " + z)
-                .attr("align", "center")
-                .attr("width", "12")
-                .attr("color", "white");
-                }
+// Add Z-axis tick marks and labels
+var zTicks = zScale.ticks(Math.ceil(dataset.length / gridMax));
+for (var i = 0; i < zTicks.length; i++) {
+    var z = zScale(zTicks[i]) - chartDepth / 2;
+    var label = zTicks[i] + 1;
+  content.append("a-box")
+    .attr("width", 0.05)
+    .attr("height", 0.05)
+    .attr("depth", 0.05)
+    .attr("position", (chartWidth / 2 + 0.05) + " " + (-yOffset - 0.075) + " " + z)
+    .attr("color", "white");
+  content.append("a-text")
+    .attr("value", label)
+    .attr("position", (chartWidth / 2 + 0.15) + " " + (-yOffset - 0.125) + " " + z)
+    .attr("align", "center")
+    .attr("width", "12")
+    .attr("color", "white");
+    }
 
                 function calculateTickCount(minValue, maxValue, scaleFactor) {
                   var dataRange = maxValue - minValue;
@@ -551,31 +636,27 @@ myBars.on("click", function (d, i) {
                   return Math.ceil(baseTickCount * scaleFactor);
               }
               
-                var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
+var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
-                // Add Y-axis tick marks and labels
-                // Add Y-axis tick marks and labels
-                // Add Y-axis tick marks and labels
-                // Add Y-axis tick marks and labels
-                var yTicks = yScale.ticks(yTickCount);
-                for (var i = 0; i < yTicks.length; i++) {
-                  var y = yScale(yTicks[i]);
-                  var label = yTicks[i];
-                  content.append("a-box")
-                    .attr("width", 0.05)
-                    .attr("height", 0.05)
-                    .attr("depth", 0.05)
-                    .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
-                    .attr("color", "white");
-                  content.append("a-text")
-                    .attr("value", label)
-                    .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + (chartDepth / 2 + 0.025))
-                    .attr("align", "right")
-                    .attr("width", "12")
-                    .attr("color", "white");
-                }
-
-                // Add X-axis label
+  // Add Y-axis tick marks and labels
+  var yTicks = yScale.ticks(yTickCount);
+  for (var i = 0; i < yTicks.length; i++) {
+    var scaledY = (yTicks[i] - minHeight) * scalingFactor;
+    var label = yTicks[i];
+    content.append("a-box")
+      .attr("width", 0.05)
+      .attr("height", 0.05)
+      .attr("depth", 0.05)
+      .attr("position", (-chartWidth / 2 - 0.075) + " " + (((scaledY - yOffset) / 2) + 0.05) + " " + (chartDepth / 2 + 0.025))
+      .attr("color", "white");
+    content.append("a-text")
+      .attr("value", label)
+      .attr("position", (-chartWidth / 2 - 0.125) + " " + (((scaledY - yOffset) / 2) + 0.05) + " " + (chartDepth / 2 + 0.025))
+      .attr("align", "right")
+      .attr("width", "12")
+      .attr("color", "white");
+}
+               // Add X-axis label
                 content.append("a-text")
                 .attr("value", "X Axis")
                 .attr("position", "0 " + (-chartHeight / 2 - 0.2) + " " + (chartDepth / 2 + 0.2))

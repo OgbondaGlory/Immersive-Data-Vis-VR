@@ -233,7 +233,12 @@ function manipulateData(tableData) {
   return sortedData;
 }
 
-
+//Style file colector
+document.getElementById("fileInput").addEventListener("change", function (event) {
+  const fileInput = event.target;
+  const fileName = fileInput.files.length ? fileInput.files[0].name : "";
+  document.getElementById("file-name").textContent = fileName;
+});
 
 
 
