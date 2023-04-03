@@ -12,7 +12,7 @@
 
     
     <script src="https://rawgit.com/mayognaise/aframe-mouse-drag-rotate-component/master/dist/aframe-mouse-drag-rotate-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-orbit-controls@0.1.9/dist/aframe-orbit-controls.min.js"></script>
+    <script src="<script src="https://cdn.rawgit.com/tizzle/aframe-orbit-controls-component/v0.1.14/dist/aframe-orbit-controls-component.min.js"></script>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ext-language_tools.js"></script>
 
@@ -32,9 +32,16 @@
                 
             </div> -->
             <form id="uploadForm" enctype="multipart/form-data" method="post" action="php/upload.php">
-                <input type="file" id="fileInput" name="file" accept=".json,.csv,.xls,.xlsx" >
-                <input type="submit">
+                <label for="fileInput" class="custom-file-upload">
+                    Browse
+                </label>
+                <input type="file" id="fileInput" name="file" accept=".json,.csv,.xls,.xlsx" style="display:none;" />
+                <span id="file-name" style="margin-left: 10px; margin-right: 20px;"></span>
+                <input type="submit" value="Submit Query">
             </form>
+            
+            
+            
             <div class="box" id="box1">
                 <div class="box-content">
                     <button id="refresh-button">Reload</button>
@@ -56,38 +63,19 @@
 
         <div class="middle">
             <div class="dropdown-container">
-                <select id="dropdown-2d-bar-charts" class="dropdown-menu" id="dropdown-2DBar">
-                    <option>2D Bar Charts</option>
-                    <option>Basic Vertical</option>
-                    <option>Basic Horizontal</option>
-                    <option>With tooltips</option>
-                    <option>With filters and tooltips</option>
-                </select>
-                <select id="dropdown-2d-scatter-plots" class="dropdown-menu" id="dropdown-2DScatter">
-                    <option>2D Scatter Plots</option>
-                    <option>Basic</option>
-                    <option>With tooltips</option>
-                    <option>With filters and tooltips</option>
-                    <option>With shapes</option>
-                </select>
-                <select id="dropdown-3d-bar-charts" class="dropdown-menu" id="dropdown-3DBar">
-                    <option>3D Bar Charts</option>
-                    <option>Basic Vertical</option>
-                    <option>Basic Horizontal</option>
-                    <option>With tooltips</option>
-                    <option>With filters and tooltips</option>
-                    <option>With cylinder mark</option>
-                </select>
-                <select id="dropdown-3d-scatter-plots" class="dropdown-menu" id="dropdown-3DScatter">
-                    <option>3D Scatter Plots</option>
-                    <option>Basic</option>
-                    <option>Advanced</option>
-                </select>
-                <select id="dropdown-others" class="dropdown-menu" id="dropdown-others">
-                    <option>Others</option>
-                </select>                
+                <div class="actions">
+                    <button id="undo">Undo</button>
+                    <button id="redo">Redo</button>
+                    <select id="statistics">
+                      <option value="">Select Statistic</option>
+                      <option value="mean">Mean</option>
+                      <option value="median">Median</option>
+                      <option value="mode">Mode</option>
+                      <option value="std-dev">Standard Deviation</option>
+                    </select>
+                    <button id="update">Update</button>
+                  </div>             
             </div>
-
 
             <div class="box vr" id="box3">
                 <div id="tooltip" class="tooltip" style="display: none;">
@@ -96,16 +84,25 @@
               
                 <a-scene embedded cursor="rayOrigin: mouse">
                   <a-entity id="helloworld" rotation="0 0 0" position="-0.01 1.6 -0.0" scale="0.1 0.1 0.1" mouse-drag-rotate></a-entity>
-                  
+              
                   <a-entity id="vr-tooltip" visible="false">
                     <a-plane id="vr-tooltip-background" width="auto" height="auto" color="rgba(0, 0, 0, 0.8)" position="0 0 -0.01"></a-plane>
                     <a-text id="vr-tooltip-content" color="#ffffff" width="1" height="1" wrap-count="40" align="left"></a-text>
                   </a-entity>
-                  
-                  <a-camera position="0 1.6 1.5" orbit-controls="target: #helloworld; enableDamping: true; dampingFactor: 0.125; rotateSpeed:0.15; minDistance:1; maxDistance:100; minPolarAngle:0; maxPolarAngle:3.14"></a-camera>
+              
+                  <a-camera position="0 1.6 1.5"
+                            camera="fov: 80; zoom: 1;"
+                            orbit-controls="autoRotate: false;
+                                            target: #helloworld;
+                                            enableDamping: true;
+                                            dampingFactor: 0.125;
+                                            rotateSpeed:0.25;
+                                            minDistance:1;
+                                            maxDistance:100;"
+                            mouse-cursor>
+                  </a-camera>
                 </a-scene>
               </div>
-              
 
             <div id="selected-table" class="selected-table">
                 <!-- The table name will be displayed here -->
@@ -134,7 +131,7 @@
                   </div>
                   
             </div>
-        </div>
+        </div> 
 
 
 
