@@ -202,24 +202,32 @@ var scaleFactor = 1.2; // Adjust this value to change the number of ticks
 var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
 // Add Y-axis tick marks and labels
-var yTicks = yScale.ticks(yTickCount);
+var yScale = d3.scale.linear()
+  .domain([minHeight * scalingFactor, d3.max(dataset) * scalingFactor])
+  .range([0, chartHeight * scalingFactor])
+  .nice();
 
+// Add Y-axis tick marks and labels
+var yTicks = yScale.ticks(yTickCount);
 for (var i = 0; i < yTicks.length; i++) {
-  var y = yScale(yTicks[i]);
-  var label = yTicks[i];
+  var scaledY = yTicks[i] - minHeight * scalingFactor;
+  var label = yTicks[i] / scalingFactor; // Divide by scalingFactor to get the original value
+
   content.append("a-box")
-  .attr("width", 0.05)
-  .attr("height", 0.05)
-  .attr("depth", 0.05)
-  .attr("position", (-chartWidth / 2 - 0.075) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
-  .attr("color", "gray");
+    .attr("width", 0.05)
+    .attr("height", 0.05)
+    .attr("depth", 0.05)
+    .attr("position", (-chartWidth / 2 - 0.075) + " " + ((scaledY / 2) + yOffset) + " " + (chartDepth / 2 + 0.025))
+    .attr("color", "white");
+
   content.append("a-text")
-  .attr("value", label)
-  .attr("position", (-chartWidth / 2 - 0.15) + " " + (y * chartHeight - chartHeight / 2 + 0.025) + " " + chartDepth / 2 + 0.05)
-  .attr("align", "right")
-  .attr("width", "12")
-  .attr("color", "white");
-  }
+    .attr("value", label)
+    .attr("position", (-chartWidth / 2 - 0.125) + " " + ((scaledY / 2) + yOffset) + " " + (chartDepth / 2 + 0.025))
+    .attr("rotation", "0 0 0")
+    .attr("align", "right")
+    .attr("width", "12")
+    .attr("color", "white");
+}
   
   // Add X-axis label
   content.append("a-text")
@@ -361,7 +369,7 @@ for (var i = 0; i < yTicks.length; i++) {
         
         
 
-        function update3DBarChart(tableData, axes, selectedBar = null) {
+        function update3DBarChart(tableData, axes, tableName,selectedBar = null) {
 
           // Clear existing content
           var content = d3.select("#helloworld").html("");
@@ -431,7 +439,55 @@ for (var i = 0; i < yTicks.length; i++) {
             },
         
           });
-        
+// Add a title to the chart
+content.append("a-text")
+.attr("value", tableName + " Distribution")
+.attr("position", (chartWidth / 2 + 6.5) + " " + (chartHeight / 2 + 0.4) + " 0") // Adjust the x-coordinate to move the title to the right
+.attr("rotation", "0 0 0")
+.attr("align", "center")
+.attr("baseline", "top")
+.attr("width", "10")
+.attr("color", "white");
+
+// Create the legend items
+const legendItems = [
+  { label: "Low", color: "steelblue" },
+  { label: "Medium", color: "orange" },
+  { label: "High", color: "red" },
+];
+
+// Add a legend to the chart
+var legend = content
+.append("a-entity")
+.attr("id", "legend")
+.attr("position", (-chartWidth / 2 - 6.5) + " " + (chartHeight / 2 + 0.2) + " " + (-chartDepth / 2));
+
+// Add legend items
+var legendItem = legend.selectAll(".legend-item")
+.data(legendItems)
+.enter()
+.append("a-entity")
+.attr("class", "legend-item");
+
+// Add legend color box
+legendItem.append("a-box")
+.attr("height", 1.5)
+.attr("width", 1.5)
+.attr("depth", 0.3)
+.attr("color", (d) => d.color)
+.attr("position", (d, i) => "0 " + (-i * 1.7) + " 0"); // Adjust the y-coordinate to accommodate the larger boxes
+
+// Add legend label
+legendItem.append("a-text")
+.attr("value", (d) => d.label)
+.attr("position", (d, i) => "2 " + (-i * 1.7 + 0.75) + " 0") // Adjust the x and y coordinates to align with the larger boxes
+.attr("align", "left")
+.attr("baseline", "center")
+.attr("width", "10.5")
+.attr("color", "white");
+
+
+
  // Add a function to determine if two data points are related based on their values
  function areRelated(value1, value2, tolerance) {
   return Math.abs(value1 - value2) <= tolerance;
@@ -638,23 +694,26 @@ for (var i = 0; i < zTicks.length; i++) {
               
 var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
 
-  // Add Y-axis tick marks and labels
-  var yTicks = yScale.ticks(yTickCount);
-  for (var i = 0; i < yTicks.length; i++) {
-    var scaledY = (yTicks[i] - minHeight) * scalingFactor;
-    var label = yTicks[i];
-    content.append("a-box")
-      .attr("width", 0.05)
-      .attr("height", 0.05)
-      .attr("depth", 0.05)
-      .attr("position", (-chartWidth / 2 - 0.075) + " " + (((scaledY - yOffset) / 2) + 0.05) + " " + (chartDepth / 2 + 0.025))
-      .attr("color", "white");
-    content.append("a-text")
-      .attr("value", label)
-      .attr("position", (-chartWidth / 2 - 0.125) + " " + (((scaledY - yOffset) / 2) + 0.05) + " " + (chartDepth / 2 + 0.025))
-      .attr("align", "right")
-      .attr("width", "12")
-      .attr("color", "white");
+// Add Y-axis tick marks and labels
+var yTicks = yScale.ticks(yTickCount);
+for (var i = 0; i < yTicks.length; i++) {
+  var scaledY = yTicks[i] - minHeight * scalingFactor;
+  var label = yTicks[i] / scalingFactor; // Divide by scalingFactor to get the original value
+
+  content.append("a-box")
+    .attr("width", 0.05)
+    .attr("height", 0.05)
+    .attr("depth", 0.05)
+    .attr("position", (-chartWidth / 2 - 0.075) + " " + ((scaledY / 2) + yOffset) + " " + (chartDepth / 2 + 0.025))
+    .attr("color", "white");
+
+  content.append("a-text")
+    .attr("value", label)
+    .attr("position", (-chartWidth / 2 - 0.125) + " " + ((scaledY / 2) + yOffset) + " " + (chartDepth / 2 + 0.025))
+    .attr("rotation", "0 0 0")
+    .attr("align", "right")
+    .attr("width", "12")
+    .attr("color", "white");
 }
                // Add X-axis label
                 content.append("a-text")
@@ -682,6 +741,7 @@ var yTickCount = calculateTickCount(minValue, maxValue, scaleFactor);
                 .attr("align", "center")
                 .attr("width", "12")
                 .attr("color", "white");
+                
 
     
     }
