@@ -204,6 +204,10 @@ function fetchTableData(tableName, event) {
       
     });
 }
+
+
+
+
 document.querySelectorAll('.run-button').forEach(button => {
   button.addEventListener('click', (event) => {
     const tableName = event.target.getAttribute('data-table-name');
