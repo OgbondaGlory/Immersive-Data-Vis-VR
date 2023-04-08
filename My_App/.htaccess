@@ -3,4 +3,4 @@ Options -Indexes
 # Redirect mobile phone users to another page
 RewriteEngine on
 RewriteCond %{HTTP_USER_AGENT} "Mobile" [NC]
-RewriteRule ^(.*)$ /mobile_error_page.html [L,R=302]
+RewriteRule ^(.*)$ /https://ebubegloryogbonda.dev/TestVR/mobile_error_page.html [L,R=302]
