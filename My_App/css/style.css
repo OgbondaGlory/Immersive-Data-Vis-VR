@@ -20,6 +20,7 @@ body {
   
 
 .box {
+    resize: both;
     width: 100%;
     max-height: 100%; /* Adjust this value if needed */
     margin-bottom: 20px;
@@ -39,7 +40,6 @@ body {
     border-radius: 15px; /* Add border-radius to the overlay */
     pointer-events: none; /* Add this line to prevent the ::before element from interfering with clicks */
 
-
 }
 
 .box-content {
@@ -49,7 +49,7 @@ body {
   
 
 .left, .middle, .right {
-    width: calc(30% * 0.65); /* 35% reduction in width */
+    min-width: calc(30% * 0.65); /* 35% reduction in width */
 }
 
 .middle {
@@ -63,7 +63,8 @@ body {
 }
 
 .right .box {
-    height: 50%;
+    max-height: 100%;
+    max-width: 100%;
 }
 
 /* Unique colors for each box */
@@ -264,11 +265,6 @@ button:hover {
 }
 
 
-
-
-
-
-
 /* Style Actions buttons */
 .actions {
   display: flex;
@@ -300,11 +296,6 @@ button:hover {
   background: white;
   color: black;
 }
-
-
-
-
-
 
 
 
@@ -359,8 +350,6 @@ button:hover {
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
-
-
   }
   
 
@@ -421,7 +410,6 @@ button:hover {
   }
   
   
-
   /* Customise 3D bar chart  */
   .tooltip {
     position: absolute;
@@ -438,4 +426,25 @@ button:hover {
     white-space: nowrap;
   }
   
+/* width and height of the scrollbar track */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+/* width and height of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 5px;
+}
+
+/* scrollbar track on hover */
+::-webkit-scrollbar-track:hover {
+  background: #eee;
+}
+
+/* scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 
