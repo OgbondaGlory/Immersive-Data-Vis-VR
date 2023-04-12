@@ -1,3 +1,5 @@
+<img src="./screenshots/figure1XR.png" alt="Immersive Data Visualisation Screenshot" title="Screenshot of the Immersive Data Visualisation Application" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);">
+
 # Immersive Data Visualisation Application
 
 This repository contains the source code for an Immersive WebVR Data Visualisation application that enables users to interact with complex data sets in an immersive 3D environment using Oculus Rift HMD and Oculus Touch controllers.
