@@ -28,8 +28,8 @@ This repository contains the source code for an Immersive WebVR Data Visualisati
 
 ## Installation
 
-1. Clone the repository to your local machine: git clone https://github.com/username/immersive-data-visualization.git
-2. Navigate to the project directory: cd immersive-data-visualization
+1. Clone the repository to your local machine: git clone https://github.com/OgbondaGlory/Immersive-Data-Vis-VR.git
+2. Navigate to the project directory: cd Immersive-Data-Vis-VR
 3. Install the required dependencies: npm install
 4. Start the development server: npm start
 
