@@ -1,2 +1,2 @@
-# Immersive-Data-Vis-XR
-Immersive Data Vis XR Assessment
+# Immersive-Data-Vis-VR
+Immersive Data Vis VR Assessment
