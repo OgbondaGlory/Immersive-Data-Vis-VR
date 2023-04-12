@@ -255,6 +255,13 @@ for (var i = 0; i < yTicks.length; i++) {
   .attr("align", "center")
   .attr("width", "8")
   .attr("color", "white");
+
+
+
+
+  
+
+  
   function formatTooltipContent(dataPoint) {
     // Replace this with the appropriate data point properties
     const { firstName, lastName, gender, age } = dataPoint;
@@ -621,7 +628,7 @@ content.append("a-box")
             var yScale = d3.scale.linear()
             .domain([0, d3.max(dataset) * scalingFactor])
             .range([0, 1])
-              .nice();
+              // .nice();
 
             var xScale = d3.scale.linear()
             .domain([0, gridMax - 1])
@@ -631,7 +638,7 @@ content.append("a-box")
             var zScale = d3.scale.linear()
                 .domain([0, Math.ceil(dataset.length / gridMax) - 1])
                 .range([0, chartDepth])
-                .nice();
+                // .nice();
 
 // Add X-axis tick marks and labels
 var xTicks = Array.from({ length: gridMax }, (_, i) => i);
