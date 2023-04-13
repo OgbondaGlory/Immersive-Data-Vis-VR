@@ -1,4 +1,4 @@
-<img src="./screenshots/figure1XR.png" alt="Immersive Data Visualisation Screenshot" title="Screenshot of the Immersive Data Visualisation Application" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);">
+<img src="./screenshots/figure1XR.png" alt="Immersive Data Visualisation Screenshot" title="Screenshot of the Immersive Data Visualisation Application" style="box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.16);">
 
 # Immersive Data Visualisation Application
 
